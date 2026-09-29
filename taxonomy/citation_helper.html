@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citation helper</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: #eff1f5;
+    color: #222;
+    font: 15px/1.5 system-ui, sans-serif;
+  }
+  main { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  p { margin: 0 0 16px; }
+  code, textarea { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  label { display: block; margin-bottom: 4px; }
+  textarea { width: 100%; min-height: 180px; padding: 8px; font-size: 13px; }
+  input[type=text] { flex: 1; min-width: 0; padding: 6px; font: inherit; }
+  .bar { margin: 8px 0 16px; }
+  .row { padding: 10px 0; border-top: 1px solid #ccd0da; }
+  .key { font-size: 12px; color: #666; margin-bottom: 4px; }
+  .out { display: flex; gap: 8px; }
+  .note { margin-top: 4px; font-size: 13px; color: #555; word-break: break-all; }
+  .warn { color: #8a5a00; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Citation helper</h1>
+  <p>Paste BibTeX, get one citation line per entry for the <code>citation</code> column of the screening tab.</p>
+
+  <p>
+    Format: <code>FirstAuthorSurname et al. Title. Venue Year</code><br>
+    One author: <code>Surname</code>. Two authors: <code>Surname and Surname</code>. Three or more: <code>Surname et al.</code>
+    The venue is the short name in parentheses when the entry has one, otherwise the full name.
+  </p>
+
+  <label for="input">BibTeX</label>
+  <textarea id="input" spellcheck="false" placeholder="@inproceedings{key,
+  author = {...},
+  title = {...},
+  booktitle = {...},
+  year = {...}
+}"></textarea>
+
+  <div class="bar">
+    <button id="convert">Convert</button>
+    <button id="copyAll">Copy all lines</button>
+    <button id="clear">Clear</button>
+  </div>
+
+  <div id="results"><p>Results appear here. Each line can be edited before copying.</p></div>
+</main>
+
+<script id="logic">
+// ---- BibTeX parsing and citation formatting (no dependencies) ----
+
+const ACCENTS = { "'": "́", "`": "̀", "^": "̂", '"': "̈", "~": "̃",
+  "=": "̄", ".": "̇", "c": "̧", "v": "̌", "H": "̋", "u": "̆" };
+const SPECIAL = { "\\ss": "ß", "\\o": "ø", "\\O": "Ø", "\\l": "ł", "\\L": "Ł",
+  "\\ae": "æ", "\\AE": "Æ", "\\oe": "œ", "\\OE": "Œ", "\\aa": "å", "\\AA": "Å",
+  "\\i": "i", "\\j": "j" };
+
+function cleanLatex(s) {
+  if (!s) return "";
+  // Accent commands such as {\'a}, \'a, {\v{s}}, \"{o}
+  s = s.replace(/\\([`'^"~=.])\s*\{?\\?([A-Za-z])\}?/g, (m, a, ch) => ch + ACCENTS[a]);
+  s = s.replace(/\\([cvHu])\s*\{([A-Za-z])\}/g, (m, a, ch) => ch + ACCENTS[a]);
+  s = s.replace(/\\([cvHu])\s+([A-Za-z])/g, (m, a, ch) => ch + ACCENTS[a]);
+  s = s.replace(/\\(ss|o|O|l|L|ae|AE|oe|OE|aa|AA|i|j)(?![A-Za-z])/g, (m) => SPECIAL[m]);
+  s = s.replace(/\\([&%$#_{}])/g, "$1");
+  s = s.replace(/[{}]/g, "");
+  s = s.replace(/\s+/g, " ").trim();
+  return s.normalize("NFC");
+}
+
+// Read a balanced {...} or "..." value starting at index i. Returns [value, nextIndex].
+function readValue(src, i) {
+  while (i < src.length && /\s/.test(src[i])) i++;
+  const c = src[i];
+  if (c === "{") {
+    let depth = 0, start = i + 1;
+    for (; i < src.length; i++) {
+      if (src[i] === "\\") { i++; continue; }
+      if (src[i] === "{") depth++;
+      else if (src[i] === "}") { depth--; if (depth === 0) return [src.slice(start, i), i + 1]; }
+    }
+    return [src.slice(start), src.length];
+  }
+  if (c === '"') {
+    let start = i + 1, depth = 0;
+    for (i = start; i < src.length; i++) {
+      if (src[i] === "\\") { i++; continue; }
+      if (src[i] === "{") depth++;
+      else if (src[i] === "}") depth--;
+      else if (src[i] === '"' && depth === 0) return [src.slice(start, i), i + 1];
+    }
+    return [src.slice(start), src.length];
+  }
+  const m = /^[^,}\s]+/.exec(src.slice(i));
+  return m ? [m[0], i + m[0].length] : ["", i];
+}
+
+function parseBibtex(text) {
+  const entries = [];
+  let i = 0;
+  while (true) {
+    const at = text.indexOf("@", i);
+    if (at < 0) break;
+    const head = /^@\s*([A-Za-z]+)\s*[{(]\s*([^,\s]*)\s*,?/.exec(text.slice(at));
+    if (!head) { i = at + 1; continue; }
+    const type = head[1].toLowerCase();
+    let pos = at + head[0].length;
+    if (type === "comment" || type === "string" || type === "preamble") { i = pos; continue; }
+    const fields = {};
+    while (pos < text.length) {
+      const rest = text.slice(pos);
+      const f = /^[\s,]*([A-Za-z][A-Za-z0-9_-]*)\s*=\s*/.exec(rest);
+      if (!f) break;
+      const [val, next] = readValue(text, pos + f[0].length);
+      fields[f[1].toLowerCase()] = val;
+      pos = next;
+    }
+    entries.push({ type, key: head[2], fields });
+    i = pos;
+  }
+  return entries;
+}
+
+// Split an author list on top-level " and ".
+function splitAuthors(s) {
+  const out = [];
+  let depth = 0, cur = "";
+  const words = s.split(/(\s+)/);
+  for (const w of words) {
+    for (const ch of w) { if (ch === "{") depth++; else if (ch === "}") depth--; }
+    if (depth === 0 && w.toLowerCase() === "and") { out.push(cur.trim()); cur = ""; }
+    else cur += w;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+
+function surnameOf(author) {
+  const a = author.trim();
+  if (a.includes(",")) return cleanLatex(a.split(",")[0]);
+  // "First Last": a fully braced name such as {World Health Organization} stays whole.
+  if (/^\{.*\}$/.test(a)) return cleanLatex(a);
+  const parts = a.split(/\s+/);
+  return cleanLatex(parts[parts.length - 1]);
+}
+
+// Venue names that are ambiguous once shortened.
+const VENUE_ALIASES = { "SP": "IEEE S&P", "SPW": "IEEE SPW" };
+
+function shortVenue(venue) {
+  const v = cleanLatex(venue);
+  // First parenthesised acronym, for example "... Learning Representations (ICLR)". It must
+  // contain at least two capital letters, which excludes phrases such as "(Volume 1)".
+  const groups = [...v.matchAll(/\(([^()]{2,30})\)/g)].map((m) => m[1]);
+  const found = groups.find((g) => (g.match(/[A-Z]/g) || []).length >= 2 && !/[,.]/.test(g));
+  if (!found) return v;
+  // Drop a trailing year marker such as "KDD '24", "USENIX Security 25" or "WiCON 2020".
+  const acronym = found.replace(/\s*'?\d{2,4}$/, "").trim();
+  return VENUE_ALIASES[acronym] || acronym;
+}
+
+function formatEntry(entry) {
+  const f = entry.fields;
+  const warnings = [];
+  let authors = f.author ? splitAuthors(f.author) : [];
+  const hasOthers = authors.length && authors[authors.length - 1].toLowerCase() === "others";
+  if (hasOthers) authors = authors.slice(0, -1);
+  let who = "";
+  if (!authors.length) { warnings.push("No author field."); }
+  else if (authors.length === 1 && !hasOthers) who = surnameOf(authors[0]);
+  else if (authors.length === 2 && !hasOthers) who = surnameOf(authors[0]) + " and " + surnameOf(authors[1]);
+  else who = surnameOf(authors[0]) + " et al.";
+
+  if (who && !who.endsWith(".")) who += ".";
+
+  const title = cleanLatex(f.title || "");
+  if (!title) warnings.push("No title field.");
+
+  const venueRaw = f.booktitle || f.journal || f.howpublished || f.publisher || "";
+  const venue = shortVenue(venueRaw);
+  if (!venue) warnings.push("No venue (booktitle or journal) field.");
+  const year = cleanLatex(f.year || "");
+  if (!year) warnings.push("No year field.");
+
+  const titlePart = title ? (/[.?!]$/.test(title) ? title : title + ".") : "";
+  const tail = [venue, year].filter(Boolean).join(" ");
+  const line = [who, titlePart, tail].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+
+  let link = f.doi ? "https://doi.org/" + cleanLatex(f.doi) : (f.url ? cleanLatex(f.url) : "");
+  return { key: entry.key, line, link, warnings };
+}
+
+function convertBibtex(text) {
+  return parseBibtex(text).map(formatEntry);
+}
+</script>
+
+<script>
+// ---- Page wiring ----
+const $ = (id) => document.getElementById(id);
+
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch (e) {
+    const t = document.createElement("textarea");
+    t.value = text; document.body.appendChild(t); t.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+    t.remove();
+    return ok;
+  }
+}
+
+function flash(btn, msg) {
+  const old = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(() => { btn.textContent = old; }, 1200);
+}
+
+function render() {
+  const results = convertBibtex($("input").value);
+  const box = $("results");
+  box.innerHTML = "";
+  if (!results.length) {
+    box.innerHTML = '<p>No BibTeX entries found.</p>';
+    return;
+  }
+  for (const r of results) {
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const key = document.createElement("div");
+    key.className = "key";
+    key.textContent = r.key;
+    row.appendChild(key);
+
+    const out = document.createElement("div");
+    out.className = "out";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "line";
+    input.value = r.line;
+    const btn = document.createElement("button");
+    btn.textContent = "Copy";
+    btn.addEventListener("click", async () => flash(btn, (await copyText(input.value)) ? "Copied" : "Copy failed"));
+    out.appendChild(input);
+    out.appendChild(btn);
+    row.appendChild(out);
+
+    if (r.link) {
+      const link = document.createElement("div");
+      link.className = "note";
+      link.textContent = "Link for the notes column: " + r.link;
+      row.appendChild(link);
+    }
+    for (const w of r.warnings) {
+      const warn = document.createElement("div");
+      warn.className = "note warn";
+      warn.textContent = w;
+      row.appendChild(warn);
+    }
+    box.appendChild(row);
+  }
+}
+
+$("convert").addEventListener("click", render);
+$("input").addEventListener("input", render);
+$("clear").addEventListener("click", () => {
+  $("input").value = "";
+  $("results").innerHTML = '<p>Results appear here. Each line can be edited before copying.</p>';
+});
+$("copyAll").addEventListener("click", async (e) => {
+  const lines = [...document.querySelectorAll("#results input.line")].map((i) => i.value);
+  if (!lines.length) return;
+  flash(e.target, (await copyText(lines.join("\n"))) ? "Copied" : "Copy failed");
+});
+</script>
+</body>
+</html>
