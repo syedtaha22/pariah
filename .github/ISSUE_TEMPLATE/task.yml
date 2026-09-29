@@ -1,0 +1,40 @@
+name: Task or feature
+description: A piece of work to implement or a change to make.
+labels: ["task"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What needs to be done, and why.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How to tell the task is done.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and references
+      description: Related issues, papers, sections of the proposal.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - taxonomy
+        - data and generator
+        - models
+        - objectives
+        - evaluation
+        - infrastructure
+        - paper and docs
+    validations:
+      required: true

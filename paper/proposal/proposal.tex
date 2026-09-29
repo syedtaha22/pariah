@@ -1,0 +1,309 @@
+\documentclass[a4paper,10pt]{article}
+
+% -------------------- Packages --------------------
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage[justification=centering]{caption}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{titling}
+\usepackage{mathptmx} % Times New Roman (text + math)
+\usepackage{xurl}
+\usepackage[numbers,sort&compress]{natbib} % numeric citations for the ACM bibliography style
+\usepackage{tikz} % Theory of Change diagram
+\usetikzlibrary{positioning, arrows.meta}
+
+%command for alg-closure that automatically adapts its 'bar' to the arg based on the args length (including '\')
+\newcommand{\ols}[1]{\mskip.5\thinmuskip\overline{\mskip-.5\thinmuskip {#1} \mskip-.5\thinmuskip}\mskip.5\thinmuskip} % overline short
+\newcommand{\olsi}[1]{\,\overline{\!{#1}}} % overline short italic
+\makeatletter
+\newcommand\closure[1]{
+  \tctestifnum{\count@stringtoks{#1}>1} %checks if number of chars in arg > 1 (including '\')
+  {\ols{#1}} %if arg is longer than just one char, e.g. \mathbb{Q}, \mathbb{F},...
+  {\olsi{#1}} %if arg is just one char, e.g. K, L,...
+}
+% FROM TOKCYCLE:
+\long\def\count@stringtoks#1{\tc@earg\count@toks{\string#1}}
+\long\def\count@toks#1{\the\numexpr-1\count@@toks#1.\tc@endcnt}
+\long\def\count@@toks#1#2\tc@endcnt{+1\tc@ifempty{#2}{\relax}{\count@@toks#2\tc@endcnt}}
+\def\tc@ifempty#1{\tc@testxifx{\expandafter\relax\detokenize{#1}\relax}}
+\long\def\tc@earg#1#2{\expandafter#1\expandafter{#2}}
+\long\def\tctestifnum#1{\tctestifcon{\ifnum#1\relax}}
+\long\def\tctestifcon#1{#1\expandafter\tc@exfirst\else\expandafter\tc@exsecond\fi}
+\long\def\tc@testxifx{\tc@earg\tctestifx}
+\long\def\tctestifx#1{\tctestifcon{\ifx#1}}
+\long\def\tc@exfirst#1#2{#1}
+\long\def\tc@exsecond#1#2{#2}
+\makeatother
+
+% -------------------- Geometry --------------------
+\geometry{
+  a4paper,
+  margin=1in
+}
+
+% -------------------- Lists & Spacing --------------------
+\setlist{itemsep=2pt, topsep=4pt, parsep=0pt}
+\setlength{\parindent}{0pt}
+\emergencystretch=2em
+\setlength{\parskip}{1.5ex plus 0.5ex minus 0.2ex}
+
+% -------------------- Section Numbering --------------------
+\setcounter{secnumdepth}{3}
+
+% -------------------- Hyperref --------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=red
+}
+
+% -------------------- Title Formatting --------------------
+\setlength{\droptitle}{-4em}
+\pretitle{\begin{center}\LARGE}
+\posttitle{\par\end{center}\vskip 0.3em}
+\predate{\begin{center}\small}
+\postdate{\par\end{center}}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null
+  \begin{center}
+    {\LARGE \@title \par}
+    \vskip 0.3em
+    {\large \@subtitle \par}
+    \vskip 0.5em
+    {\large
+      \begin{tabular}[t]{c}
+        \@author
+      \end{tabular}\par}
+    \vskip 0.8em
+    {\small \@date \par}
+  \end{center}
+  \par
+}
+\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
+\makeatother
+
+% -------------------- Code Listings --------------------
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    xleftmargin=0.5cm
+}
+
+\lstset{style=mystyle}
+
+% -------------------- Metadata --------------------
+\title{SoK: On the Generalization and Limits of GNN-Transformer Hybrids in Intrusion Detection}
+\subtitle{}
+\author{Syed Taha (29208) \hspace{3em} Fatima Kaleem (31620) \hspace{3em} Nawail Khan (30603)}
+\date{September 20, 2026}
+
+\renewcommand{\abstractname}{Summary}
+
+% -------------------- Document --------------------
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This proposal studies whether hybrids of graph neural networks (GNNs) and Transformers remain reliable for network intrusion detection when the deployment network differs from the network they were trained on. Existing hybrids are evaluated mostly on the distribution they were trained on, while learning-based intrusion detectors have repeatedly been reported to overstate their practical performance. We treat the effect of topology and size shift, and the effect of invariance-based training, as questions to be tested rather than assumed. The study systematizes existing GNN, Transformer and hybrid detectors, builds a reproducible benchmark with documented environment splits and a synthetic shift generator with known spurious structure, and evaluates whether invariance objectives improve hybrids beyond tuned empirical risk minimization and Group DRO. Each hypothesis is paired with a null hypothesis and measured by worst-environment F1 and the false-positive rate at a fixed true-positive rate. Positive and negative outcomes are both informative: the former identify what works under shift, and the latter document where invariance objectives designed for message-passing GNNs do not transfer to global attention.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% -------------------- Sections Start Here --------------------
+
+\section{Introduction}
+
+Graph representations are widely used for intrusion detection. Provenance-based detectors such as Kairos and Flash model system activity as a graph and apply GNNs to it~\cite{cheng2024kairos,rehman2024flash}, and flow-based detectors treat hosts and connections as nodes and edges. More recently, hybrids that combine a GNN with a Transformer have been proposed for network intrusion detection~\cite{xie2026hybrid,appiahene2026hybrid,zhang2024icist}, following the same combination of local message passing and global attention that has been developed for general graph learning~\cite{rampasek2022graphgps,shirzad2023exphormer}.
+
+A recurring difficulty in learning-based intrusion detection is the gap between reported and practical performance. Sommer and Paxson argued early that finding attacks differs fundamentally from other machine learning applications~\cite{sommer2010closed}, and later work catalogues pitfalls such as sampling bias and spurious correlations~\cite{arp2022dos}. A recent study of eight provenance-based detectors found them impractical despite near-perfect reported accuracy, and showed that a simple neural network matches state-of-the-art detection on five of seven DARPA datasets~\cite{bilot2025simpler}. Datasets contribute to the problem: CICIDS2017 contains errors in flow construction and labelling~\cite{engelen2021cicids}, and NetFlow datasets derived from different sources have heterogeneous feature sets that hinder cross-dataset comparison~\cite{sarhan2021netflow}.
+
+Distribution shift is the natural next question. The graph out-of-distribution (OOD) literature has developed invariance-based methods~\cite{wu2022dir,wu2022eerm}, benchmarks~\cite{gui2022good}, and analyses of size generalization~\cite{yehudai2021size}, and recent work has begun to examine attention-based graph models under shift~\cite{guo2024ood,liao2026igt}. None of this work targets security data, and for intrusion detection it remains open whether the degradation seen on unseen networks is caused by topology and scale shift or by label noise and feature mismatch.
+
+This proposal addresses that question for GNN-Transformer hybrids. It formulates testable hypotheses about invariance-based training, positional encodings under size shift, and reliance on spurious global structure, and it specifies a controlled evaluation in which baselines are tuned with equal budgets and in-distribution and OOD results are reported together. The contributions are a taxonomy of GNN, Transformer and hybrid intrusion detectors, a reproducible benchmark with documented environments and a synthetic shift generator, and a controlled evaluation of whether invariance objectives help hybrids beyond tuned empirical risk minimization and Group DRO~\cite{sagawa2020dro}.
+
+The remainder of the proposal is organized as follows. Section~\ref{sec:litreview} reviews the relevant literature. Section~\ref{sec:landscape} summarizes the existing prior work and states the research gap. Section~\ref{sec:hypotheses} formulates the hypotheses, Section~\ref{sec:toc} gives the Theory of Change, and Section~\ref{sec:negative} describes the value of negative results.
+
+\section{Literature Review}
+\label{sec:litreview}
+
+\subsection{Evaluating machine learning for intrusion detection}
+
+Sommer and Paxson argued that the task of finding attacks is fundamentally different from other machine learning applications, which makes it significantly harder for the intrusion detection community to employ machine learning effectively~\cite{sommer2010closed}. Arp et al.\ catalogue pitfalls of machine learning in security, including sampling bias and spurious correlations, and note that data acquisition is difficult and often draws on several sources of varying quality, so that bias can often only be mitigated and not removed~\cite{arp2022dos}. Bilot et al.\ evaluated eight state-of-the-art provenance-based detectors in one framework, identified nine limitations that hinder practical adoption, and showed that a simple neural network achieves state-of-the-art detection on five of seven DARPA datasets~\cite{bilot2025simpler}.
+
+Dataset quality is a confound in its own right. Engelen et al.\ found errors in both the CICFlowMeter tool and the CICIDS2017 dataset, concerning TCP flow termination, attack simulation and labelling~\cite{engelen2021cicids}. Sarhan et al.\ derived NetFlow features from four benchmark datasets (UNSW-NB15, BoT-IoT, ToN-IoT and CSE-CIC-IDS2018) because the original datasets have very different feature sets, which makes it hard to compare models across datasets and to judge whether they generalize to other network environments~\cite{sarhan2021netflow}.
+
+\subsection{Distribution shift, shortcuts and invariance}
+
+Geirhos et al.\ describe shortcuts as decision rules that perform well on standard benchmarks but fail to transfer to more challenging testing conditions, and argue that many failures of deep learning are symptoms of this problem~\cite{geirhos2020shortcut}. Invariant risk minimization (IRM) is one response, and Rosenfeld et al.\ analyse it formally: in the linear case the number of training environments needed for good generalization grows with the number of non-invariant features, and in the non-linear case the intuition behind risk extrapolation does not hold~\cite{rosenfeld2021risks}.
+
+Empirical comparisons temper the case for specialized methods. Gulrajani and Lopez-Paz introduced DomainBed, a testbed with seven benchmarks, fourteen algorithms and three model selection criteria, and argued that an algorithm without a model selection criterion is incomplete~\cite{gulrajani2021lost}. Sagawa et al.\ show that distributionally robust optimization and upweighting of minority groups improve worst-group error on strongly regularized networks but not on standard networks that reach zero training error~\cite{sagawa2020dro}. Miller et al.\ find that OOD performance is strongly correlated with in-distribution performance across many models and shifts, with weaker correlation in some cases~\cite{miller2021line}. Taori et al.\ evaluated 204 ImageNet models under 213 test conditions and found little to no transfer of robustness from synthetic to natural distribution shift~\cite{taori2020natural}. Randomized smoothing addresses a different problem: it yields certified robustness to $\ell_2$-bounded adversarial perturbations~\cite{cohen2019smoothing}.
+
+\subsection{Graph out-of-distribution generalization}
+
+DIR discovers invariant rationales for GNNs by conducting interventions on the training distribution to create multiple interventional distributions~\cite{wu2022dir}. EERM extrapolates from a single observed environment using context explorers, trained adversarially to maximize the variance of risks over virtual environments~\cite{wu2022eerm}. GOOD provides a benchmark of 11 datasets with 17 domain selections and 51 splits, distinguishes covariate from concept shift, and reports significant gaps between in-distribution and OOD performance~\cite{gui2022good}. Size generalization is a separate difficulty: GNNs are not guaranteed to generalize from small to large graphs when the local structure depends on the graph size, and empirically tend to converge to non-generalizing solutions in that case~\cite{yehudai2021size}.
+
+\subsection{Graph Transformers and hybrids}
+
+The Transformer relies on self-attention, in which every position attends to every other position~\cite{vaswani2017attention}, so the cost of full attention grows quadratically with the number of nodes when applied to graphs. Graphormer shows that a standard Transformer with structural encodings (centrality, spatial and edge encodings) is competitive on graph representation benchmarks~\cite{ying2021graphormer}. GraphGPS provides a recipe that combines positional and structural encodings, local message passing and global attention, and decouples local aggregation from the fully connected Transformer to reach linear complexity~\cite{rampasek2022graphgps}. Exphormer builds sparse attention from virtual global nodes and expander graphs and plugs it into GraphGPS~\cite{shirzad2023exphormer}.
+
+The positional encoding matters for generalization to larger inputs. In sequence Transformers, common encodings such as APE, ALiBi and Rotary are poorly suited to length generalization, and a Transformer without explicit positional encoding performed best in one systematic study~\cite{kazemnejad2023pe}. Whether the same holds for graph encodings under network-size shift is not established by that work.
+
+Work on graph Transformers under shift is recent. An architecture study finds that graph self-attention and decoupled architectures positively affect OOD generalization~\cite{guo2024ood}, and an invariant graph Transformer extends invariant learning to graph Transformers~\cite{liao2026igt}. Attention weights are often read as explanations, but Jain and Wallace show that they are not reliably faithful explanations of model outputs~\cite{jain2019attention}, and Wiegreffe and Pinter argue that attention can be informative under narrower definitions~\cite{wiegreffe2019attention}.
+
+\subsection{Graph learning for intrusion detection}
+
+Kairos uses a GNN-based encoder-decoder that learns the temporal evolution of a provenance graph's structural changes to quantify how anomalous each system event is and to reconstruct attack footprints~\cite{cheng2024kairos}. Flash applies GNNs to provenance graphs with a Word2Vec-based semantic encoder that captures semantic attributes and the temporal ordering of events~\cite{rehman2024flash}. For network traffic, hybrid models combine a GNN with a Transformer~\cite{xie2026hybrid,zhang2024icist} or combine graph convolution with a Transformer architecture~\cite{appiahene2026hybrid}.
+
+% -------------------- Existing prior work, research gap, hypotheses --------------------
+
+\section{Literature Landscape \texorpdfstring{\&}{and} Existing Prior Work}
+\label{sec:landscape}
+
+To assess whether this specific problem has been tackled, we dissect the intersection of three active fields:
+
+\begin{itemize}
+    \item \textbf{Graph OOD Generalization \& Invariant Learning:} Top venues have published extensively on graph OOD generalization (e.g., \emph{DIR} at ICLR 2022,~\cite{wu2022dir} \emph{EERM} at ICLR 2022,~\cite{wu2022eerm} and the \emph{GOOD} benchmark at the NeurIPS 2022 Datasets and Benchmarks track~\cite{gui2022good}). These works learn invariant subgraphs or environments to prevent shortcut learning in message-passing GNNs. GOOD separates covariate shift from concept shift and reports large gaps between in-distribution and OOD performance across a range of methods.~\cite{gui2022good} Size generalization is a distinct difficulty: GNNs are not guaranteed to generalize from small to large graphs when local structure depends on graph size.~\cite{yehudai2021size}
+    \item \textbf{GNN-Transformer Hybrids:} \emph{Graphormer} (NeurIPS 2021) shows that a standard Transformer with structural encodings is competitive on graph representation benchmarks,~\cite{ying2021graphormer} while \emph{GraphGPS} (NeurIPS 2022) provides the canonical hybrid recipe of positional/structural encodings, local message passing and global attention, decoupling local aggregation from the fully connected Transformer to reach linear complexity.~\cite{rampasek2022graphgps} \emph{Exphormer} (ICML 2023) adds sparse attention built from expander graphs and virtual global nodes on top of GraphGPS.~\cite{shirzad2023exphormer} These works are evaluated primarily on standard benchmark splits (such as OGB and ZINC), with distribution shift receiving comparatively little attention. OOD work on attention-based graph models has begun to appear: a KDD 2024 study finds that graph self-attention and decoupled architectures positively affect OOD generalization,~\cite{guo2024ood} and an invariant graph transformer has been reported at KDD 2026.~\cite{liao2026igt} Neither targets security data.
+    \item \textbf{Security Threat Detection via Graphs:} IEEE S\&P features graph-based intrusion detection, such as \emph{Kairos}~\cite{cheng2024kairos} and \emph{Flash}~\cite{rehman2024flash} (both 2024), and GNN-Transformer hybrids have been applied to flow-based network intrusion detection.~\cite{xie2026hybrid,appiahene2026hybrid,zhang2024icist} Independent evaluation shows a persistent gap between reported and practical performance: a study of eight provenance-based detectors reports near-perfect published accuracy but limited practicality, and finds that a simple neural network matches state-of-the-art detection on five of seven DARPA datasets.~\cite{bilot2025simpler} Sampling bias and spurious correlations are recognized pitfalls of machine learning in security,~\cite{arp2022dos} and cross-dataset comparison of NetFlow-based detectors is hindered by heterogeneous feature sets and dataset construction errors.~\cite{sarhan2021netflow,engelen2021cicids} Whether topology and scale shift, as opposed to label noise or feature mismatch, is the main driver of degradation on unseen networks remains to be separated empirically.
+\end{itemize}
+
+\subsection{The Research Gap}
+
+Invariant learning for graph transformers has been explored on general graph benchmarks,~\cite{liao2026igt} and GNN-Transformer hybrids have been applied to intrusion detection,~\cite{xie2026hybrid,appiahene2026hybrid,zhang2024icist} but to our knowledge the two have not been combined and evaluated under \textbf{topological scale shift} and \textbf{spurious global attention shortcuts} in security domains. Existing invariant learning methods were designed and evaluated mainly on message-passing GNNs,~\cite{wu2022dir,wu2022eerm,gui2022good} and how they interact with global self-attention on security graphs is untested. Two considerations make the interaction non-trivial: shortcut learning is a general property of deep networks,~\cite{geirhos2020shortcut} and invariance objectives such as IRM have documented limits, including a required number of training environments that grows with the number of non-invariant features and failure of risk extrapolation in the non-linear case.~\cite{rosenfeld2021risks}
+
+This SoK therefore contributes:
+\begin{itemize}
+    \item a taxonomy of GNN, Transformer and hybrid intrusion detectors organized by graph construction, local and global mechanism, and evaluation protocol;
+    \item a reproducible benchmark of cleaned intrusion data, documented environment splits and a synthetic shift generator with known causal and spurious structure;
+    \item a controlled evaluation of whether invariance objectives improve GNN-Transformer hybrids beyond tuned empirical risk minimization and Group DRO,~\cite{sagawa2020dro} under topology and scale shift.
+\end{itemize}
+
+\section{Hypotheses Formulation}
+\label{sec:hypotheses}
+
+To make the research question scientifically testable and falsifiable, we formalize it into a primary hypothesis, sub-hypotheses, and their corresponding null hypotheses. Effects are assessed over at least 10 random seeds per configuration, following GOOD's protocol,~\cite{gui2022good} with paired bootstrap confidence intervals and Holm correction across hypotheses. All methods receive the same hyperparameter budget.
+
+\subsection{Primary Hypothesis (\texorpdfstring{$H_1$}{H1})}
+
+\begin{itemize}
+    \item \textbf{Statement:} Integrating invariant representation learning objectives into GNN-Transformer hybrid architectures lowers the false-positive rate at a fixed true-positive rate and raises worst-environment F1 on held-out networks, compared with the same hybrids trained by tuned ERM or Group DRO, without reducing in-distribution performance beyond a pre-stated tolerance.
+    \item \textbf{Null ($H_{0}$):} Invariance objectives do not differ from tuned ERM or Group DRO on these metrics.
+\end{itemize}
+
+The true-positive rate at which false-positive rates are compared is fixed before the experiments and applied identically to all methods, and threshold-free metrics (AUROC and AUPRC) are reported alongside. Model selection follows a stated protocol (source-environment validation, with OOD validation reported separately), because conclusions about domain generalization methods are sensitive to it.~\cite{gulrajani2021lost} In-distribution and OOD results are always reported together, since OOD accuracy often tracks in-distribution accuracy closely.~\cite{miller2021line}
+
+\subsection{Sub-Hypotheses \texorpdfstring{\&}{and} Null Hypotheses}
+
+\begin{itemize}
+    \item \textbf{Sub-Hypothesis 1.1 (Structural Scaling):}
+    \begin{itemize}
+        \item \emph{Alternative ($H_{1.1}$):} With architecture, attention type and training held fixed, size-robust positional/structural encodings yield higher worst-size-bin F1 than standard encodings when testing on networks 2x, 5x and 10x larger than training.
+        \item \emph{Null ($H_{0.1}$):} The choice of positional/structural encoding has no statistically significant effect on worst-size-bin F1 under these size shifts.
+    \end{itemize}
+    \emph{Rationale and design.} Size generalization depends on how local structure changes with graph size,~\cite{yehudai2021size} and in sequence Transformers the positional encoding strongly affects generalization to longer inputs.~\cite{kazemnejad2023pe} Encodings span spectral, random-walk and distance-based families, plus a no-encoding control, within the GraphGPS design space.~\cite{rampasek2022graphgps} Full self-attention cost grows quadratically with the number of nodes,~\cite{vaswani2017attention} so large-size experiments use sparse or linear-complexity attention~\cite{rampasek2022graphgps,shirzad2023exphormer} and results are reported per attention type.
+
+    \item \textbf{Sub-Hypothesis 1.2 (Spurious Shortcut Mitigation):}
+    \begin{itemize}
+        \item \emph{Alternative ($H_{1.2}$):} Enforcing invariant risk minimization (IRM) or conditional invariance penalties across diverse environmental graph partitions reduces a hybrid's reliance on injected non-causal global structure, measured as the accuracy drop when that structure is removed or randomized, relative to a matched non-invariant regularizer and to standard cross-entropy training.
+        \item \emph{Null ($H_{0.2}$):} Invariant risk penalties do not change this interventional reliance measure relative to a matched non-invariant regularizer or standard cross-entropy training.
+    \end{itemize}
+    \emph{Rationale and design.} Ground truth about which structure is causal is available only by construction, so this hypothesis is tested on synthetic graphs whose spurious signal (for example a hub node or background-subnet pattern) has a label correlation that varies across training environments and is reversed at test time, in the manner of graph OOD benchmarks.~\cite{wu2022dir,wu2022eerm,gui2022good} Attention mass on the injected structure is reported as a secondary measure, because attention weights are not reliably faithful explanations of model behaviour.~\cite{jain2019attention,wiegreffe2019attention}
+\end{itemize}
+
+\section{Theory of Change (ToC)}
+\label{sec:toc}
+
+The Theory of Change outlines the logical causal pathway from our research interventions to the ultimate impact on security threat detection.
+
+\begin{center}
+\begin{tikzpicture}[
+    block/.style={draw, rectangle, fill=blue!6, inner sep=6pt, text width=0.9\textwidth, align=left},
+    arr/.style={-{Latex[length=3mm]}, thick}
+]
+\node[block] (b1) {\textbf{Inputs / Resources}
+  \begin{itemize}[nosep, leftmargin=*]
+    \item Cleaned common-feature NetFlow datasets
+    \item Synthetic shift generator
+    \item GNN-Transformer base architectures
+    \item Invariant Learning frameworks (IRM/EERM/DIR)
+  \end{itemize}};
+\node[block, below=8mm of b1] (b2) {\textbf{Activities / Interventions}
+  \begin{enumerate}[nosep, leftmargin=*]
+    \item Systematize GNN, Transformer and hybrid intrusion detectors and their evaluation protocols.
+    \item Formulate an environment-split strategy for security graphs (simulating topological and size shifts).
+    \item Evaluate size-robust positional encodings within attention-message passing hybrids.
+    \item Implement invariant risk penalties to regularize reliance on spurious global structure.
+  \end{enumerate}};
+\node[block, below=8mm of b2] (b3) {\textbf{Outputs}
+  \begin{itemize}[nosep, leftmargin=*]
+    \item A taxonomy of hybrid intrusion detectors and an open benchmark with documented environments.
+    \item Benchmarking results reported with worst-environment F1, FPR at fixed TPR, and paired confidence intervals.
+  \end{itemize}};
+\node[block, below=8mm of b3] (b4) {\textbf{Outcomes (Short-to-Medium Term)}
+  \begin{itemize}[nosep, leftmargin=*]
+    \item Evidence on whether invariance objectives make hybrids less reliant on spurious environmental confounders (e.g., background subnets).
+    \item Evidence on robustness against topological and size shifts, reported alongside in-distribution accuracy.
+  \end{itemize}};
+\node[block, below=8mm of b4] (b5) {\textbf{Impact (Long-Term)}\\[2pt]
+  A shared evaluation standard for graph-attention intrusion detection under distribution shift, including interventional tests of spurious reliance.};
+\foreach \a/\b in {b1/b2, b2/b3, b3/b4, b4/b5} { \draw[arr] (\a) -- (\b); }
+\end{tikzpicture}
+\end{center}
+
+\section{Negative Results}
+\label{sec:negative}
+
+If our attempts to integrate invariant representation learning into GNN-Transformer hybrids fail to yield performance gains, the impact and value of the work shift into several key areas. The evaluation is designed so that such a result is informative: baselines are tuned with equal budgets, model selection is explicit, and seeds are sufficient to detect the effects of interest.~\cite{gulrajani2021lost}
+
+\subsection{Exposing the Limits of Invariance Objectives in Graph-Attention Hybrids}
+
+\begin{itemize}
+    \item \textbf{The Failure Mode:} Invariance objectives may fail to improve hybrids beyond tuned ERM. Formal analysis already shows that IRM requires many environments in the linear case and does not extend to the non-linear case,~\cite{rosenfeld2021risks} and ERM is competitive with specialized methods under fair model selection on a standard domain generalization testbed.~\cite{gulrajani2021lost} Global attention could make this worse if it lets the model route information through spurious paths that the penalty does not constrain. This is a hypothesis to be tested, and training stability (gradient norms, loss curves) is recorded as an outcome.
+    \item \textbf{The Impact:} A paper titled \emph{``On the Limits of Invariance Objectives in Graph-Attention Hybrids''} would give the community a diagnostic warning, with controlled evidence on where invariance objectives designed for message-passing GNNs do and do not transfer to global attention architectures, complementing recent work that adapts invariant learning to graph transformers.~\cite{liao2026igt}
+\end{itemize}
+
+\subsection{Demonstrating the Limits of ``Environment Splits'' in Security Graphs}
+
+\begin{itemize}
+    \item \textbf{The Failure Mode:} Invariant learning relies on defining distinct ``environments'' (e.g., different network topologies or data collection sources) to isolate causal features from spurious ones.~\cite{rosenfeld2021risks,wu2022eerm} In security graphs, artificial environment partitioning may remove structural dependencies that GNN-Transformer hybrids need, causing models to perform worse than a baseline trained on pooled data.
+    \item \textbf{The Impact:} This would provide domain-specific evidence that security graph topologies are tightly coupled with their operational environments, limiting clean invariant decomposition. It redirects research toward approaches aimed at natural distribution shift, such as Group DRO,~\cite{sagawa2020dro} domain adaptation, augmentation and better data and labelling.~\cite{bilot2025simpler,engelen2021cicids} Adversarial training and randomized smoothing address worst-case perturbations within a norm ball rather than natural distribution shift,~\cite{cohen2019smoothing} and robustness to synthetic perturbations often does not transfer to natural shifts,~\cite{taori2020natural} so they are not proposed as substitutes.
+\end{itemize}
+
+\subsection{Saving the Community Compute and Redundant Effort}
+
+\begin{itemize}
+    \item \textbf{The Impact:} Many research groups are building hybrid architectures for security.~\cite{xie2026hybrid,appiahene2026hybrid,zhang2024icist} A rigorously documented negative result, complete with ablation studies showing \emph{where} and \emph{why} the hybrid model overfits despite regularization, saves the community substantial time and computational resources. It continues a tradition of critical re-evaluations that have changed how progress is measured in security machine learning,~\cite{bilot2025simpler,arp2022dos,engelen2021cicids,sommer2010closed} and establishes a baseline for what does not work.
+\end{itemize}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
