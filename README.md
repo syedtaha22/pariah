@@ -64,7 +64,8 @@ hypotheses. All methods receive the same hyperparameter budget. The evaluation p
 │   └── raw/
 ├── experiments/
 ├── paper
-│   └── proposal/
+│   ├── proposal/
+│   └── references.bib
 ├── src
 │   ├── data/
 │   ├── eval/

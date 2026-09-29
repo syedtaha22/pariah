@@ -65,7 +65,7 @@ each will be fixed before annotation starts.
 | Group | Column | Meaning |
 | --- | --- | --- |
 | Identity | `paper_id` | Stable id for the paper in this study |
-| | `citation_key` | Key in `paper/proposal/references.bib` |
+| | `citation_key` | Key in [references.bib](../paper/references.bib) |
 | | `year`, `venue` | Publication year and venue |
 | | `domain` | Network traffic or provenance |
 | Graph construction | `graph_construction` | What the nodes and edges represent |

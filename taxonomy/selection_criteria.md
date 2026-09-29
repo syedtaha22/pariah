@@ -36,7 +36,7 @@ preprints are not. The `venue` column records where each paper appeared.
 | DBLP | Venue-level checks |
 
 Citation chasing (backward through references and forward through citing papers) starts from the
-seed papers already in [references.bib](../paper/proposal/references.bib) that fall within scope.
+seed papers already in [references.bib](../paper/references.bib) that fall within scope.
 
 ## Search terms
 
@@ -88,4 +88,4 @@ A paper that meets the inclusion criteria is excluded if any of these apply:
 4. **Full-text screening.** Apply the criteria to the full text. Record the reason for every
    exclusion using the numbered criteria above.
 5. **Inclusion.** Papers that pass are added to the `annotation` tab of the sheet, each
-   with a `citation_key` in [references.bib](../paper/proposal/references.bib).
+   with a `citation_key` in [references.bib](../paper/references.bib).
