@@ -75,8 +75,13 @@ hypotheses. All methods receive the same hyperparameter budget. The evaluation p
 │       ├── logger.py
 │       └── seed.py
 ├── taxonomy
-│   ├── annotation_sheet.csv
-│   └── README.md
+│   ├── annotation.csv
+│   ├── counts.csv
+│   ├── pull_sheet.py
+│   ├── README.md
+│   ├── screening.csv
+│   ├── search_log.csv
+│   └── selection_criteria.md
 ├── tests
 │   └── test_utils.py
 ├── .gitignore

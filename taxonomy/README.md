@@ -5,7 +5,7 @@ structured classification of GNN, Transformer and hybrid intrusion detectors, or
 construction, local and global mechanism, and evaluation protocol. It also provides the evidence
 for the research gap, for example how many surveyed papers evaluate only in-distribution.
 
-Status: the sheet contains the column header only. No papers have been annotated yet.
+Status: no papers have been annotated yet.
 
 ## How it works
 
@@ -13,16 +13,29 @@ Two copies of the data exist, and each has one job.
 
 | Copy | Job |
 | --- | --- |
-| [Google Sheet](https://docs.google.com/spreadsheets/d/1wPJQEQHTMulkVwAT1RbsJdcIyLWiV8egwoYeIhpZAL8/edit?usp=sharing) | Working surface. All annotation and editing happens here. |
-| `annotation_sheet.csv` | Frozen record. Committed to git and read by the analysis code. |
+| [Google Sheet](https://docs.google.com/spreadsheets/d/1oLs2gFi7dHppirYe85IIiVnHk7T8rR8FWzJ5L6e9kAc/edit?usp=sharing) | Working surface. All annotation and screening happens here. |
+| The CSV files in this folder | Frozen record. Committed to git and read by the analysis code. |
 
-The CSV should not be edited by hand. It should be produced from the sheet by `pull_sheet.py`, so the two
-cannot silently diverge and every change to the record is a reviewable git diff.
+The CSV files should not be edited by hand. They should be produced from the sheet by
+[pull_sheet.py](pull_sheet.py), so the two cannot silently diverge and every change to the record
+is a reviewable git diff.
+
+The sheet has five tabs:
+
+| Tab | Contents | CSV |
+| --- | --- | --- |
+| `annotation` | One row per included paper, one column per attribute | `annotation.csv` |
+| `search_log` | One row per search or citation chase | `search_log.csv` |
+| `screening` | One row per candidate paper, with its screening decisions | `screening.csv` |
+| `counts` | Screening totals and exclusions by reason, computed by formulas | `counts.csv` |
+| `guide` | Explains every column and reason code | none |
 
 ## Files
 
-- `annotation_sheet.csv`: one row per surveyed paper, one column per attribute.
-- `pull_sheet.py`: downloads the sheet as CSV into `annotation_sheet.csv`.
+- [selection_criteria.md](selection_criteria.md): scope, date range, sources, search terms, and the
+  inclusion and exclusion criteria.
+- [pull_sheet.py](pull_sheet.py): downloads the tabs of the sheet into the CSV files.
+- `annotation.csv`, `search_log.csv`, `screening.csv`, `counts.csv`: the record.
 - `README.md`: this file.
 
 ## Usage
@@ -30,17 +43,19 @@ cannot silently diverge and every change to the record is a reviewable git diff.
 Run from the repository root. The sheet must be shared as "Anyone with the link: Viewer".
 
 ```bash
-uv run python taxonomy/pull_sheet.py             # pull the first tab into annotation_sheet.csv
-uv run python taxonomy/pull_sheet.py --check     # report differences, write nothing (exit 1 if any)
-uv run python taxonomy/pull_sheet.py --gid 123   # pull a specific tab (gid is in the tab URL)
-uv run python taxonomy/pull_sheet.py --out path  # write somewhere else
+uv run python taxonomy/pull_sheet.py                   # pull every tab
+uv run python taxonomy/pull_sheet.py --tab screening   # pull one tab (repeatable)
+uv run python taxonomy/pull_sheet.py --check           # report differences, write nothing (exit 1 if any)
+uv run python taxonomy/pull_sheet.py --out-dir path    # write somewhere else
 ```
 
+Every tab is fetched and checked before anything is written, so a failure leaves all files as they
+were.
+
 Workflow:
-1. Annotate papers in the sheet.
-2. Run `--check` to see whether the committed CSV is behind.
-3. Run the script without flags, review the diff with `git diff taxonomy/annotation_sheet.csv`, and
-   commit it.
+1. Annotate papers and record screening in the sheet.
+2. Run `--check` to see whether the committed CSV files are behind.
+3. Run the script without flags, review the diff with `git diff taxonomy/`, and commit it.
 
 ## Columns
 

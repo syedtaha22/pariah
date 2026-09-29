@@ -1,0 +1,33 @@
+Stage,Count,,,How it is computed
+Records identified,0,,,Sum of the imported column in search_log
+Duplicates removed,0,,,Rows in screening with a duplicate_of value
+Screened at title and abstract,0,,,Identified minus duplicates
+Excluded at title and abstract,0,,,Rows with title_abstract_decision = exclude
+Read in full text,0,,,Rows with a full_text_decision
+Excluded at full text,0,,,Rows with full_text_decision = exclude
+Included,0,,,Rows with full_text_decision = include
+,,,,
+Consistency checks,,,,
+Candidates in screening equal records identified,OK,,,
+Full text reads equal screened minus title and abstract exclusions,OK,,,
+Included plus excluded at full text equal full text reads,OK,,,
+,,,,
+,,,,
+Exclusions by reason,,,,
+Reason code,Title and abstract,Full text,Total,Meaning
+I1,0,0,0,Not a learning-based intrusion detector
+I2,0,0,0,"No graph-structured input, or no GNN, graph Transformer or hybrid"
+I3,0,0,0,Not targeting network traffic or host provenance
+I4,0,0,0,"Not peer reviewed (journal, conference or workshop proceedings)"
+I5,0,0,0,Outside the date range
+I6,0,0,0,Not in English
+I7,0,0,0,Full text not accessible
+E1,0,0,0,Graphs used only for visualization or analysis
+E2,0,0,0,"Transformer works on flat features or sequences, no graph input"
+E3,0,0,0,"Unreviewed preprint, or abstract or poster with no evaluation"
+E4,0,0,0,Duplicate or earlier version of an included paper
+E5,0,0,0,"Different task, no intrusion detection component"
+E6,0,0,0,General method with no security data or security evaluation
+E7,0,0,0,Survey or systematization that proposes no detector
+,,,,
+Grey cells are formulas. Do not type in them.,,,,
