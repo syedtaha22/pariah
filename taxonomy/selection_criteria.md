@@ -78,6 +78,15 @@ A paper that meets the inclusion criteria is excluded if any of these apply:
 7. It is a survey or systematization that proposes no detector. Such papers are used as
    references and are not annotated.
 
+## Recording the reason
+
+Every excluded paper gets one reason code in the sheet. `I1` to `I7` mean the paper fails
+inclusion criterion 1 to 7. `E1` to `E7` mean the paper meets all seven inclusion criteria and is
+removed by exclusion criterion 1 to 7.
+
+A paper that fails several inclusion criteria gets the code of the first one it fails, in list
+order. An `E` code is used only for a paper that passes all seven inclusion criteria.
+
 ## Screening stages
 
 1. **Identification.** Run the searches and citation chasing. Record the number of results per
