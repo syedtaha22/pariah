@@ -62,6 +62,9 @@ A paper is included if it meets all of these:
 6. It is written in English.
 7. Its full text is accessible.
 
+A paper that evaluates several detectors qualifies if at least one evaluated detector meets the
+criterion.
+
 ## Exclusion criteria
 
 A paper that meets the inclusion criteria is excluded if any of these apply:
