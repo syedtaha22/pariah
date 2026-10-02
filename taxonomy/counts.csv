@@ -1,22 +1,22 @@
 Stage,Count,,,How it is computed
-Records identified,10,,,Sum of the imported column in search_log
+Records identified,74,,,Sum of the imported column in search_log
 Duplicates removed,0,,,Rows in screening with a duplicate_of value
-Screened at title and abstract,10,,,Identified minus duplicates
-Excluded at title and abstract,9,,,Rows with title_abstract_decision = exclude
-Read in full text,1,,,Rows with a full_text_decision
-Excluded at full text,0,,,Rows with full_text_decision = exclude
-Included,1,,,Rows with full_text_decision = include
+Screened at title and abstract,74,,,Identified minus duplicates
+Excluded at title and abstract,24,,,Rows with title_abstract_decision = exclude
+Read in full text,6,,,Rows with a full_text_decision
+Excluded at full text,2,,,Rows with full_text_decision = exclude
+Included,4,,,Rows with full_text_decision = include
 ,,,,
 Consistency checks,,,,
 Candidates in screening equal records identified,OK,,,
-Full text reads equal screened minus title and abstract exclusions,OK,,,
+Full text reads equal screened minus title and abstract exclusions,CHECK,,,
 Included plus excluded at full text equal full text reads,OK,,,
 ,,,,
 ,,,,
 Exclusions by reason,,,,
 Reason code,Title and abstract,Full text,Total,Meaning
-I1,9,0,9,Not a learning-based intrusion detector
-I2,0,0,0,"No graph-structured input, or no GNN, graph Transformer or hybrid"
+I1,24,0,24,Not a learning-based intrusion detector
+I2,0,2,2,"No graph-structured input, or no GNN, graph Transformer or hybrid."
 I3,0,0,0,Not targeting network traffic or host provenance
 I4,0,0,0,"Not peer reviewed (journal, conference or workshop proceedings)"
 I5,0,0,0,Outside the date range

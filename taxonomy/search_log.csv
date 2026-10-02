@@ -1,2 +1,5 @@
 date,source,method,query_or_seed,filters,hits,imported,searcher,notes
 2026-09-29,Proposal literature review,manual,"Papers cited in the proposal, batch 1 (ST)",,10,10,ST,
+2026-09-30,Proposal literature review,manual,"Papers cited in the proposal, batch 2 (FK)",,10,10,FK,
+2026-09-30,Proposal literature review,manual,"Papers cited in the proposal, batch 3 (NK)",,10,10,NK,
+2026-10-02,IEEE Xplore,backward,cheng2024kairos,published 2017 or later; peer-reviewed publications only,75,44,ST,
