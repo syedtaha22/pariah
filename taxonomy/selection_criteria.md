@@ -16,8 +16,9 @@ marked in the `domain` column:
 ## Date range
 
 Papers published from **1 January 2017** to **29 September 2026**, the search date. The
-Transformer and graph convolutional networks both date from 2017, so earlier papers cannot use
-them.
+Transformer dates from 2017, so no GNN-Transformer hybrid can predate it. The widely used GNN
+architectures that intrusion detectors build on appeared from 2017 onward: the graph convolutional
+network (2017), GraphSAGE (2017) and the graph attention network (2018).
 
 ## Venue
 
