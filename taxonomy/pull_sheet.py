@@ -19,7 +19,7 @@ import urllib.request
 from pathlib import Path
 
 SHEET_ID = "1oLs2gFi7dHppirYe85IIiVnHk7T8rR8FWzJ5L6e9kAc"
-OUT_DIR = Path(__file__).resolve().parent
+OUT_DIR = Path(__file__).resolve().parent / "data"
 TIMEOUT_S = 30
 
 # Tab name -> (gid, is_table, expected first header cell). Tables have one header row and one
@@ -147,6 +147,7 @@ def main() -> int:
             print(f"differs from the sheet: {path.name}")
         return 1
     # Write atomically so an interrupted run never leaves a half-written file.
+    args.out_dir.mkdir(parents=True, exist_ok=True)
     for path in changed:
         tmp = path.with_suffix(".csv.tmp")
         tmp.write_text(pending[path], encoding="utf-8", newline="")

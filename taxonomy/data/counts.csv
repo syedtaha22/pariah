@@ -1,7 +1,7 @@
 Stage,Count,,,How it is computed
 Records identified,74,,,Sum of the imported column in search_log
-Duplicates removed,0,,,Rows in screening with a duplicate_of value
-Screened at title and abstract,74,,,Identified minus duplicates
+Duplicates removed,1,,,Rows in screening with a duplicate_of value
+Screened at title and abstract,73,,,Identified minus duplicates
 Excluded at title and abstract,24,,,Rows with title_abstract_decision = exclude
 Read in full text,6,,,Rows with a full_text_decision
 Excluded at full text,2,,,Rows with full_text_decision = exclude
