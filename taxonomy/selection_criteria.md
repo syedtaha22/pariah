@@ -10,7 +10,7 @@ marked in the `domain` column:
 
 | Domain | Graph | Data source |
 | --- | --- | --- |
-| Network | Hosts as nodes, flows or connections as edges | Traffic captures, NetFlow |
+| Network | Hosts, flows, traffic records or feature patches as nodes; connections, flows or similarity links between them as edges | Traffic captures, NetFlow |
 | Provenance | System entities (processes, files, sockets) as nodes, system events as edges | Operating system audit logs |
 
 ## Date range
