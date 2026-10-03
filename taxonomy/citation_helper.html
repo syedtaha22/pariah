@@ -35,7 +35,7 @@
   <p>
     Format: <code>FirstAuthorSurname et al. Title. Venue Year</code><br>
     One author: <code>Surname</code>. Two authors: <code>Surname and Surname</code>. Three or more: <code>Surname et al.</code>
-    The venue is the short name in parentheses when the entry has one, otherwise the full name.
+    Common venues get a fixed short name (NeurIPS, ICML, ICLR, KDD, ACM CCS, USENIX Security, NDSS, IEEE S&amp;P and others). Other venues use the acronym in parentheses when the entry has one, otherwise the full name.
   </p>
 
   <label for="input">BibTeX</label>
@@ -153,11 +153,41 @@ function surnameOf(author) {
   return cleanLatex(parts[parts.length - 1]);
 }
 
-// Venue names that are ambiguous once shortened.
-const VENUE_ALIASES = { "SP": "IEEE S&P", "SPW": "IEEE SPW" };
+// Fixed short names for common venues. The first matching pattern wins, so more specific
+// patterns come before broader ones. Venues with "workshop" in the name are matched only by the
+// patterns that name a workshop series, so other workshops keep their full name.
+const VENUE_PATTERNS = [
+  [/network and distributed system(s)? security/i, "NDSS"],
+  [/security and privacy workshops/i, "IEEE SPW"],
+  [/symposium on security and privacy/i, "IEEE S&P"],
+  [/usenix\s*(security|sec\b)/i, "USENIX Security"],
+  [/computer and communications security/i, "ACM CCS"],
+  [/neural information processing systems/i, "NeurIPS"],
+  [/international conference on machine learning/i, "ICML"],
+  [/international conference on learning representations/i, "ICLR"],
+  [/sigkdd|knowledge discovery (and|&) data mining/i, "KDD"],
+  [/aaai conference on artificial intelligence/i, "AAAI"],
+  [/international joint conference on artificial intelligence/i, "IJCAI"],
+  [/ijcnlp/i, "EMNLP-IJCNLP"],
+  [/empirical methods in natural language processing/i, "EMNLP"],
+  [/north american chapter of the association for computational linguistics/i, "NAACL-HLT"],
+  [/symposium on cloud computing/i, "SoCC"],
+  [/theory and practice of provenance/i, "TaPP"],
+  [/hot topics in cloud computing/i, "HotCloud"],
+  [/communication technology/i, "ICCT"],
+  [/information science and technology/i, "ICIST"],
+  [/big data technologies and applications/i, "BDTA/WiCON"],
+  [/mach\.? learn\.? res|journal of machine learning research/i, "Journal of Machine Learning Research"],
+];
+// Acronyms in parentheses that are ambiguous once shortened.
+const ACRONYM_ALIASES = { "SP": "IEEE S&P", "SPW": "IEEE SPW" };
 
 function shortVenue(venue) {
   const v = cleanLatex(venue);
+  const isWorkshop = /workshop/i.test(v) && !/security and privacy workshops|theory and practice of provenance/i.test(v);
+  if (!isWorkshop) {
+    for (const [pattern, short] of VENUE_PATTERNS) if (pattern.test(v)) return short;
+  }
   // First parenthesised acronym, for example "... Learning Representations (ICLR)". It must
   // contain at least two capital letters, which excludes phrases such as "(Volume 1)".
   const groups = [...v.matchAll(/\(([^()]{2,30})\)/g)].map((m) => m[1]);
@@ -165,7 +195,7 @@ function shortVenue(venue) {
   if (!found) return v;
   // Drop a trailing year marker such as "KDD '24", "USENIX Security 25" or "WiCON 2020".
   const acronym = found.replace(/\s*'?\d{2,4}$/, "").trim();
-  return VENUE_ALIASES[acronym] || acronym;
+  return ACRONYM_ALIASES[acronym] || acronym;
 }
 
 function formatEntry(entry) {
