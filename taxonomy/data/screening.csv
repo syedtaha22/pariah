@@ -1,75 +1,202 @@
 candidate_id,citation,found_via,duplicate_of,title_abstract_decision,title_abstract_reason,full_text_decision,full_text_reason,screener,notes
-ST-001,Wu et al. Discovering Invariant Rationales for Graph Neural Networks. ICLR 2022,2,,exclude,I1,,,ST,"General method for interpretable GNNs, evaluated on graph classification. No security data."
-ST-002,Wu et al. Handling Distribution Shifts on Graphs: An Invariance Perspective. ICLR 2022,2,,exclude,I1,,,ST,General method that helps GNNs make reliable predictions on graph-structured data even when the underlying data distribution changes.
-ST-003,Gui et al. GOOD: A Graph Out-of-Distribution Benchmark. Advances in Neural Information Processing Systems 2022,2,,exclude,I1,,,ST,Benchmark containing graph datasets with different shift splits to evaluate OOD performance on GNNs
-ST-004,Yehudai et al. From Local Structures to Size Generalization in Graph Neural Networks. Proceedings of the 38th International Conference on Machine Learning 2021,2,,exclude,I1,,,ST,"A study proving why GNNs fail to generalize across graph sizes due to local structure discrepancies, alongside proposed solutions including a self-supervised task to improve size-generalization."
-ST-005,Ying et al. Do Transformers Really Perform Badly for Graph Representation? Advances in Neural Information Processing Systems 2021,2,,exclude,I1,,,ST,"A Transformer-based model that incorporates spatial, centrality, and edge encodings to achieve competitive performance on graph representation learning tasks."
-ST-006,"Rampášek et al. Recipe for a General, Powerful, Scalable Graph Transformer. Advances in Neural Information Processing Systems 2022",2,,exclude,I1,,,ST,"A modular Graph Transformer framework (GraphGPS) with linear time complexity that combines local message passing, global attention, and structural encodings for scalable graph learning."
-ST-007,Shirzad et al. Exphormer: Sparse Transformers for Graphs. Proceedings of the 40th International Conference on Machine Learning 2023,2,,exclude,I1,,,ST,A sparse attention framework for graph transformers using expander graphs and virtual global nodes to achieve linear complexity and scalability to large graphs.
-ST-008,Guo et al. Investigating Out-of-Distribution Generalization of GNNs: An Architecture Perspective. Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining 2024,2,,exclude,I1,,,ST,"An architectural study of GNN components under graph OOD settings, introducing a novel backbone model (DGat) that combines graph self-attention and decoupled architectures for improved generalization."
-ST-009,Liao et al. Invariant Graph Transformer for Out-of-Distribution Generalization. Proceedings of the 32nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.1 2026,2,,exclude,I1,,,ST,An OOD-generalized Graph Transformer that disentangles invariant subgraphs via entropy-guided attention and dynamic subgraph encodings to handle distribution shifts.
-ST-010,Cheng et al. KAIROS: Practical Intrusion Detection and Investigation using Whole-system Provenance. Symposium on Security and Privacy (S&P'24) 2024,2,,include,,include,,ST,A PIDS using a GNN-based encoder-decoder to track structural changes over time and reconstruct compact summary graphs of attack activity.
-NK-001,"Rehman et al. Flash: A Comprehensive Approach to Intrusion Detection via Provenance Graph Representation Learning. IEEE Symposium on Security and Privacy (S&P), 2024.",4,,include,,include,,NK,Uses a GNN on system-log graphs to find attacks. Passes all criteria. Provenance
-NK-002,"Xie and Liu. A Novel Hybrid Graph Neural Network and Transformer Model for Intrusion Detection. Peer-to-Peer Networking and Applications, 2026.",4,,include,,exclude,I2,NK,"Turns one traffic record into a tiny 8x8 image, then makes 16 patch nodes. The graph is not hosts or flows and never links different records. Network"
+ST-001,Wu et al. Discovering Invariant Rationales for Graph Neural Networks. ICLR 2022,2,,exclude,E6,,,ST,"General method for interpretable GNNs, evaluated on graph classification. No security data."
+ST-002,Wu et al. Handling Distribution Shifts on Graphs: An Invariance Perspective. ICLR 2022,2,,exclude,E6,,,ST,General method that helps GNNs make reliable predictions on graph-structured data even when the underlying data distribution changes.
+ST-003,Gui et al. GOOD: A Graph Out-of-Distribution Benchmark. NeurIPS 2022,2,,exclude,E6,,,ST,Benchmark containing graph datasets with different shift splits to evaluate OOD performance on GNNs
+ST-004,Yehudai et al. From Local Structures to Size Generalization in Graph Neural Networks. ICML 2021,2,,exclude,E6,,,ST,"A study proving why GNNs fail to generalize across graph sizes due to local structure discrepancies, alongside proposed solutions including a self-supervised task to improve size-generalization."
+ST-005,Ying et al. Do Transformers Really Perform Badly for Graph Representation? NeurIPS 2021,2,,exclude,E6,,,ST,"A Transformer-based model that incorporates spatial, centrality, and edge encodings to achieve competitive performance on graph representation learning tasks."
+ST-006,"Rampášek et al. Recipe for a General, Powerful, Scalable Graph Transformer. NeurIPS 2022",2,,exclude,E6,,,ST,"A modular Graph Transformer framework (GraphGPS) with linear time complexity that combines local message passing, global attention, and structural encodings for scalable graph learning."
+ST-007,Shirzad et al. Exphormer: Sparse Transformers for Graphs. ICML 2023,2,,exclude,E6,,,ST,A sparse attention framework for graph transformers using expander graphs and virtual global nodes to achieve linear complexity and scalability to large graphs.
+ST-008,Guo et al. Investigating Out-of-Distribution Generalization of GNNs: An Architecture Perspective. KDD 2024,2,,exclude,E6,,,ST,"An architectural study of GNN components under graph OOD settings, introducing a novel backbone model (DGat) that combines graph self-attention and decoupled architectures for improved generalization."
+ST-009,Liao et al. Invariant Graph Transformer for Out-of-Distribution Generalization. KDD 2026,2,,exclude,E6,,,ST,An OOD-generalized Graph Transformer that disentangles invariant subgraphs via entropy-guided attention and dynamic subgraph encodings to handle distribution shifts.
+ST-010,Cheng et al. KAIROS: Practical Intrusion Detection and Investigation using Whole-system Provenance. IEEE S&P 2024,2,,include,,include,,ST,A PIDS using a GNN-based encoder-decoder to track structural changes over time and reconstruct compact summary graphs of attack activity.
+NK-001,Rehman et al. Flash: A Comprehensive Approach to Intrusion Detection via Provenance Graph Representation Learning. IEEE S&P 2024,4,,include,,include,,NK,Uses a GNN on system-log graphs to find attacks. Passes all criteria. Provenance
+NK-002,Xie and Liu. A Novel Hybrid Graph Neural Network and Transformer Model for Intrusion Detection. PPNA 2026,4,,include,,exclude,I2,NK,"Turns one traffic record into a tiny 8x8 image, then makes 16 patch nodes. The graph is not hosts or flows and never links different records. Network"
 NK-003,"Appiahene et al. Network Intrusion Detection Using a Hybrid Graph-Based Convolutional Network and Transformer Architecture. PLOS ONE, 2026.",4,,include,,exclude,I2,NK,"Nodes are traffic records linked to similar records. Not a host-and-flow graph, so it fails our scope table. Network"
-NK-004,"Zhang and Cao. A Hybrid Approach to Network Intrusion Detection Based on Graph Neural Networks and Transformer Architectures. 2024 14th ICIST, 2024.",4,,include,,include,,NK,"Hosts are nodes, flows are edges, GNN then Transformer. Passes all criteria. Network"
-NK-005,"Bilot et al. Sometimes Simpler is Better: A Comprehensive Analysis of State-of-the-Art Provenance-Based Intrusion Detection Systems. USENIX Security Symposium, 2025.",4,,include,,include,,NK,Evaluates 8 provenance IDSs (7 graph architectures) across OS audit logs. Provenance.
-NK-006,"Arp et al. Dos and Don'ts of Machine Learning in Computer Security. USENIX Security Symposium, 2022.",4,,exclude,I1,,,NK,Talks about mistakes in security ML in general. No graph detector. Background reading only
-NK-007,"Sarhan et al. NetFlow Datasets for Machine Learning-Based Network Intrusion Detection Systems. BDTA/WiCON, Springer, 2021.",4,,exclude,I1,,,NK,Builds NetFlow datasets and tests them with non-graph models. Background reading only
-NK-008,"Engelen et al. Troubleshooting an Intrusion Detection Dataset: the CICIDS2017 Case Study. IEEE Security and Privacy Workshops (SPW), 2021.",4,,exclude,I1,,,NK,Finds errors in the CICIDS2017 dataset. No detector proposed or tested. Background reading only
-NK-009,"Geirhos et al. Shortcut Learning in Deep Neural Networks. Nature Machine Intelligence, 2020.",4,,exclude,I1,,,NK,General paper on shortcut learning. No security data or detector. Background reading only
-NK-010,"Rosenfeld et al. The Risks of Invariant Risk Minimization. ICLR, 2021.",4,,exclude,I1,,,NK,Theory about invariant learning. No security data or detector. Background reading only
-FK-001,Wiegreffe and Pinter. Attention is not not Explanation. EMNLP-IJCNLP 2019,3,,exclude,I1,,,FK,"Challenges Jain and Wallace; proposes 4 tests of attention as explanation (uniform-weights baseline, seed-variance baseline, frozen-weight MLP diagnostic, adversarial training). BiLSTM with attention on SST, IMDB, AG News, 20 Newsgroups, MIMIC-III Diabetes and Anemia. No security data or detector. Background reading only"
-FK-002,Cohen et al. Certified Adversarial Robustness via Randomized Smoothing. ICML 2019,3,,exclude,I1,,,FK,Randomized smoothing: tight L2 certified-robustness bound for any base classifier under Gaussian noise. Image classifiers only (ResNet on CIFAR-10 and ImageNet). No security data or detector. Background reading only
-FK-003,Taori et al. Measuring Robustness to Natural Distribution Shifts in Image Classification. NeurIPS 2020,3,,exclude,I1,,,FK,"Meta-study of 204 ImageNet models in 213 test conditions; synthetic robustness does not transfer to natural shift (ImageNetV2, ObjectNet, video frames, ImageNet-A). Proposes the effective robustness metric. Image data only, no detector. Background reading only"
-FK-004,Sommer and Paxson. Outside the Closed World: On Using Machine Learning for Network Intrusion Detection. IEEE S&P 2010,3,,exclude,I1,,,FK,"Position paper on why ML-based anomaly detection is rarely deployed for network intrusion detection (closed-world assumption, cost of errors, semantic gap, traffic diversity, evaluation problems) plus guidelines. No detector proposed or evaluated, no experiments, no graph input. Relevant to our evaluation criteria. Background reading only"
-FK-005,Gulrajani and Lopez-Paz. In Search of Lost Domain Generalization. ICLR 2021,3,,exclude,I1,,,FK,"DomainBed testbed: 14 domain generalization algorithms, 7 image classification datasets (Colored MNIST, Rotated MNIST, PACS, VLCS, OfficeHome, TerraIncognita, DomainNet), 3 model selection rules; ResNet-50 and MNIST ConvNet. Finds tuned ERM matches all methods within 1 point and that model selection changes results. Image data only, no security data or detector. Background reading only"
-FK-006,Miller et al. Accuracy on the Line: On the Strong Correlation Between Out-of-Distribution and In-Distribution Generalization. ICML 2021,3,,exclude,I1,,,FK,"Shows OOD accuracy is linearly correlated with ID accuracy (probit scale) across 3,000+ models on CIFAR-10 variants, ImageNet-V2, CINIC-10, STL-10, YCB-Objects pose, FMoW-WILDS and iWildCam-WILDS; weak on Camelyon17-WILDS and some CIFAR-10-C noise. Gaussian theory model. Image data only, no security data or detector. Background reading only"
-FK-007,Kazemnejad et al. The Impact of Positional Encoding on Length Generalization in Transformers. NeurIPS 2023,3,,exclude,I1,,,FK,"Compares length generalization of decoder-only Transformers trained from scratch with APE, T5 relative PE, ALiBi, Rotary and no PE on 10 synthetic tasks (copy, reverse, addition, sorting, parity, LEGO, SCAN, PCFG, etc.); NoPE best. Appendix adds 1.3B code models on StarCoder. Sequence PEs, not graph PEs. No security data or detector. Background reading only"
-FK-008,Vaswani et al. Attention Is All You Need. NeurIPS 2017,3,,exclude,I1,,,FK,"Original Transformer (multi-head self-attention, sinusoidal positional encoding) for machine translation on WMT 2014 En-De and En-Fr. No graph input, no security data or detector. Background reading only"
-FK-009,Jain and Wallace. Attention is not Explanation. NAACL-HLT 2019,3,,exclude,I1,,,FK,"Shows attention weights correlate weakly with gradient and leave-one-out importance, and adversarial attention gives the same predictions. BiLSTM, CNN and average encoders on text classification (SST, IMDB, ADR Tweets, 20 Newsgroups, AG News, MIMIC-III), QA (CNN, bAbI) and NLI (SNLI). No security data or detector. Background reading only"
-FK-010,Sagawa et al. Distributionally Robust Neural Networks. ICLR 2020,3,,exclude,I1,,,FK,"Group DRO for worst-group accuracy under spurious correlations; needs strong L2 penalty or early stopping to help overparameterized models; adds group adjustments and a stochastic optimizer. ResNet-50 on Waterbirds and CelebA, BERT on MultiNLI. No security data or detector. Background reading only"
-ST-011,Han et al. Unicorn: Runtime Provenance-Based Detector for Advanced Persistent Threats. NDSS 2020,5,,,,,,,
-ST-012,Milajerdi et al. HOLMES: Real-Time APT Detection through Correlation of Suspicious Information Flows. IEEE S&P 2019,5,,,,,,,
-ST-013,Barre et al. Mining Data Provenance to Detect Advanced Persistent Threats. TaPP 2019,5,,,,,,,
-ST-014,Hassan et al. Towards Scalable Cluster Auditing through Grammatical Inference over Provenance Graphs. Network and Distributed System Security Symposium 2018,5,,,,,,,
-ST-015,Zeng et al. SHADEWATCHER: Recommendation-guided Cyber Threat Analysis using System Audit Records. IEEE S&P 2022,5,,,,,,,
-ST-016,Wang et al. THREATRACE: Detecting and Tracing Host-Based Threats in Node Level Through Provenance Graph Learning. IEEE Transactions on Information Forensics and Security 2022,5,,,,,,,
-ST-017,Pasquier et al. Practical whole-system provenance capture. Proceedings of the 2017 Symposium on Cloud Computing 2017,5,,,,,,,
-ST-018,Han et al. SIGL: Securing Software Installations Through Deep Graph Learning. USENIX Security 2021,5,,,,,,,
-ST-019,Liu et al. Log2vec: A Heterogeneous Graph Embedding Based Approach for Detecting Cyber Threats within Enterprise. Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security 2019,5,,,,,,,
-ST-020,Du et al. DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning. Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security 2017,5,,,,,,,
-ST-021,Milajerdi et al. POIROT: Aligning Attack Behavior with Kernel Audit Records for Cyber Threat Hunting. Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security 2019,5,,,,,,,
-ST-022,Hassan et al. NoDoze: Combatting Threat Alert Fatigue with Automated Provenance Triage. NDSS 2019,5,,,,,,,
-ST-023,Han et al. FRAPpuccino: Fault-detection through Runtime Analysis of Provenance. HotCloud 2017,5,,,,,,,
-ST-024,Hassan et al. Tactical Provenance Analysis for Endpoint Detection and Response Systems. IEEE S&P 2020,5,,,,,,,
-ST-025,Wang et al. You Are What You Do: Hunting Stealthy Malware via Data Provenance Analysis. NDSS 2020,5,,,,,,,
-ST-026,Paccagnella et al. Custos: Practical Tamper-Evident Auditing of Operating Systems Using Trusted Execution. NDSS 2020,5,,,,,,,
-ST-027,Paccagnella et al. Logging to the Danger Zone: Race Condition Attacks and Defenses on System Audit Frameworks. Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security 2020,5,,,,,,,
-ST-028,Zhang et al. Dynamic Malware Analysis with Feature Engineering and Feature Learning. Proceedings of the AAAI Conference on Artificial Intelligence 2020,5,,,,,,,
-ST-029,Kazemi et al. Representation learning for dynamic graphs: a survey. J. Mach. Learn. Res. 2020,5,,,,,,,
-ST-030,Rossi et al. Temporal Graph Networks for Deep Learning on Dynamic Graphs. ICML Workshop on Graph Representation Learning 2020,5,,,,,,,
-ST-031,"Shi et al. Masked Label Prediction: Unified Message Passing Model for Semi-Supervised Classification. Proceedings of the Thirtieth International Joint Conference on Artificial Intelligence, IJCAI-21 2021",5,,,,,,,
-ST-032,Pasquier et al. Runtime Analysis of Whole-System Provenance. Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security 2018,5,,,,,,,
-ST-033,Liu et al. Towards a Timely Causality Analysis for Enterprise Security. NDSS 2018,5,,,,,,,
-ST-034,Fey and Lenssen. Fast Graph Representation Learning with PyTorch Geometric. ICLR Workshop on Representation Learning on Graphs and Manifolds 2019,5,,,,,,,
-ST-035,Yu et al. Needle in a Haystack: Attack Detection from Large-Scale System Audit. ICCT 2019,5,,,,,,,
-ST-036,Berrada and Cheney. Aggregating unsupervised provenance anomaly detectors. TaPP 2019,5,,,,,,,
-ST-037,Berrada et al. A baseline for unsupervised advanced persistent threat detection in system-level provenance. Future Generation Computer Systems 2020,5,,,,,,,
-ST-038,Xie et al. P-Gaussian: Provenance-Based Gaussian Distribution for Detecting Intrusion Behavior Variants Using High Efficient and Real Time Memory Databases. IEEE Transactions on Dependable and Secure Computing 2021,5,,,,,,,
-ST-039,Hossain et al. Combating Dependence Explosion in Forensic Analysis Using Alternative Tag Propagation Semantics. IEEE S&P 2020,5,,,,,,,
-ST-040,Arp et al. Dos and Don'ts of Machine Learning in Computer Security. USENIX Security 2022,5,NK-006,,,,,,
-ST-041,Zügner et al. Adversarial Attacks on Neural Networks for Graph Data. Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining 2018,5,,,,,,,
-ST-042,Zügner and Günnemann. Adversarial Attacks on Graph Neural Networks via Meta Learning. International Conference on Learning Representations 2019,5,,,,,,,
-ST-043,Zhang and Zitnik. GNNGuard: Defending Graph Neural Networks against Adversarial Attacks. Advances in Neural Information Processing Systems 2020,5,,,,,,,
-ST-044,Alsaheel et al. ATLAS: A Sequence-based Learning Approach for Attack Investigation. USENIX Security 2021,5,,,,,,,
-ST-045,Hossain et al. SLEUTH: Real-time Attack Scenario Reconstruction from COTS Audit Data. USENIX Security 2017,5,,,,,,,
-ST-046,Xiong et al. Conan: A Practical Real-Time APT Detection System With High Accuracy and Efficiency. IEEE Transactions on Dependable and Secure Computing 2022,5,,,,,,,
-ST-047,Han et al. DeepAID: Interpreting and Improving Deep Learning-based Anomaly Detection in Security Applications. Proceedings of the 2021 ACM SIGSAC Conference on Computer and Communications Security 2021,5,,,,,,,
-ST-048,Wang and Gong. Attacking Graph-based Classification via Manipulating the Graph Structure. Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security 2019,5,,,,,,,
-ST-049,"Goyal et al. Sometimes, You Aren't What You Do: Mimicry Attacks against Provenance Graph Host Intrusion Detection Systems. Proceedings 2023 Network and Distributed System Security Symposium 2023",5,,,,,,,
-ST-050,Inam et al. SoK: History is a Vast Early Warning System: Auditing the Provenance of System Intrusions. IEEE S&P 2023,5,,,,,,,
-ST-051,Yang et al. PROGRAPHER: An Anomaly Detection System based on Provenance Graph Embedding. USENIX Security 2023,5,,,,,,,
-ST-052,Xu et al. DEPCOMM: Graph Summarization on System Audit Logs for Attack Investigation. IEEE S&P 2022,5,,,,,,,
-ST-053,Hossain et al. Dependence-Preserving Data Compaction for Scalable Forensic Analysis. USENIX Security 2018,5,,,,,,,
-ST-054,"Han et al. Anomaly Detection in the Open World: Normality Shift Detection, Explanation, and Adaptation. NDSS 2023",5,,,,,,,
+NK-004,Zhang and Cao. A Hybrid Approach to Network Intrusion Detection Based on Graph Neural Networks and Transformer Architectures. ICIST 2024,4,,include,,include,,NK,"Hosts are nodes, flows are edges, GNN then Transformer. Passes all criteria. Network"
+NK-005,Bilot et al. Sometimes Simpler is Better: A Comprehensive Analysis of State-of-the-Art Provenance-Based Intrusion Detection Systems. USENIX Security 2025,4,,include,,include,,NK,Evaluates 8 provenance IDSs (7 graph architectures) across OS audit logs. Provenance.
+NK-006,Arp et al. Dos and Don'ts of Machine Learning in Computer Security. USENIX Security 2022,4,,exclude,E7,,,NK,Talks about mistakes in security ML in general. No graph detector. Background reading only
+NK-007,Sarhan et al. NetFlow Datasets for Machine Learning-Based Network Intrusion Detection Systems. BDTA/WiCON 2021,4,,exclude,I2,,,NK,Builds NetFlow datasets and tests them with non-graph models. Background reading only
+NK-008,Engelen et al. Troubleshooting an Intrusion Detection Dataset: the CICIDS2017 Case Study. IEEE SPW 2021,4,,exclude,I2,,,NK,Corrects errors in the CICIDS2017 dataset and benchmarks non-graph machine learning on it.
+NK-009,"Geirhos et al. Shortcut Learning in Deep Neural Networks. Nature Machine Intelligence, 2020.",4,,exclude,E6,,,NK,General paper on shortcut learning. No security data or detector. Background reading only
+NK-010,"Rosenfeld et al. The Risks of Invariant Risk Minimization. ICLR, 2021.",4,,exclude,E6,,,NK,Theory about invariant learning. No security data or detector. Background reading only
+FK-001,Wiegreffe and Pinter. Attention is not not Explanation. EMNLP-IJCNLP 2019,3,,exclude,E6,,,FK,"Challenges Jain and Wallace; proposes 4 tests of attention as explanation (uniform-weights baseline, seed-variance baseline, frozen-weight MLP diagnostic, adversarial training). BiLSTM with attention on SST, IMDB, AG News, 20 Newsgroups, MIMIC-III Diabetes and Anemia. No security data or detector. Background reading only"
+FK-002,Cohen et al. Certified Adversarial Robustness via Randomized Smoothing. ICML 2019,3,,exclude,E6,,,FK,Randomized smoothing: tight L2 certified-robustness bound for any base classifier under Gaussian noise. Image classifiers only (ResNet on CIFAR-10 and ImageNet). No security data or detector. Background reading only
+FK-003,Taori et al. Measuring Robustness to Natural Distribution Shifts in Image Classification. NeurIPS 2020,3,,exclude,E6,,,FK,"Meta-study of 204 ImageNet models in 213 test conditions; synthetic robustness does not transfer to natural shift (ImageNetV2, ObjectNet, video frames, ImageNet-A). Proposes the effective robustness metric. Image data only, no detector. Background reading only"
+FK-004,Sommer and Paxson. Outside the Closed World: On Using Machine Learning for Network Intrusion Detection. IEEE S&P 2010,3,,exclude,E7,,,FK,"Position paper on why ML-based anomaly detection is rarely deployed for network intrusion detection (closed-world assumption, cost of errors, semantic gap, traffic diversity, evaluation problems) plus guidelines. No detector proposed or evaluated, no experiments, no graph input. Relevant to our evaluation criteria. Background reading only"
+FK-005,Gulrajani and Lopez-Paz. In Search of Lost Domain Generalization. ICLR 2021,3,,exclude,E6,,,FK,"DomainBed testbed: 14 domain generalization algorithms, 7 image classification datasets (Colored MNIST, Rotated MNIST, PACS, VLCS, OfficeHome, TerraIncognita, DomainNet), 3 model selection rules; ResNet-50 and MNIST ConvNet. Finds tuned ERM matches all methods within 1 point and that model selection changes results. Image data only, no security data or detector. Background reading only"
+FK-006,Miller et al. Accuracy on the Line: On the Strong Correlation Between Out-of-Distribution and In-Distribution Generalization. ICML 2021,3,,exclude,E6,,,FK,"Shows OOD accuracy is linearly correlated with ID accuracy (probit scale) across 3,000+ models on CIFAR-10 variants, ImageNet-V2, CINIC-10, STL-10, YCB-Objects pose, FMoW-WILDS and iWildCam-WILDS; weak on Camelyon17-WILDS and some CIFAR-10-C noise. Gaussian theory model. Image data only, no security data or detector. Background reading only"
+FK-007,Kazemnejad et al. The Impact of Positional Encoding on Length Generalization in Transformers. NeurIPS 2023,3,,exclude,E6,,,FK,"Compares length generalization of decoder-only Transformers trained from scratch with APE, T5 relative PE, ALiBi, Rotary and no PE on 10 synthetic tasks (copy, reverse, addition, sorting, parity, LEGO, SCAN, PCFG, etc.); NoPE best. Appendix adds 1.3B code models on StarCoder. Sequence PEs, not graph PEs. No security data or detector. Background reading only"
+FK-008,Vaswani et al. Attention Is All You Need. NeurIPS 2017,3,,exclude,E6,,,FK,"Original Transformer (multi-head self-attention, sinusoidal positional encoding) for machine translation on WMT 2014 En-De and En-Fr. No graph input, no security data or detector. Background reading only"
+FK-009,Jain and Wallace. Attention is not Explanation. NAACL-HLT 2019,3,,exclude,E6,,,FK,"Shows attention weights correlate weakly with gradient and leave-one-out importance, and adversarial attention gives the same predictions. BiLSTM, CNN and average encoders on text classification (SST, IMDB, ADR Tweets, 20 Newsgroups, AG News, MIMIC-III), QA (CNN, bAbI) and NLI (SNLI). No security data or detector. Background reading only"
+FK-010,Sagawa et al. Distributionally Robust Neural Networks. ICLR 2020,3,,exclude,E6,,,FK,"Group DRO for worst-group accuracy under spurious correlations; needs strong L2 penalty or early stopping to help overparameterized models; adds group adjustments and a stochastic optimizer. ResNet-50 on Waterbirds and CelebA, BERT on MultiNLI. No security data or detector. Background reading only"
+ST-011,Han et al. Unicorn: Runtime Provenance-Based Detector for Advanced Persistent Threats. NDSS 2020,5,,unsure,,exclude,I2,ST,An anomaly-based APT detector using graph sketching and provenance analysis. Does not use GNNs or Transformers
+ST-012,Milajerdi et al. HOLMES: Real-Time APT Detection through Correlation of Suspicious Information Flows. IEEE S&P 2019,5,,exclude,I1,,,ST,
+ST-013,Barre et al. Mining Data Provenance to Detect Advanced Persistent Threats. TaPP 2019,5,,unsure,,exclude,I1,ST,
+ST-014,Hassan et al. Towards Scalable Cluster Auditing through Grammatical Inference over Provenance Graphs. NDSS 2018,5,,exclude,I2,,,ST,Cluster auditing system that learns a graph grammar (DFA learning) to cut audit storage. Not a detector.
+ST-015,Zeng et al. SHADEWATCHER: Recommendation-guided Cyber Threat Analysis using System Audit Records. IEEE S&P 2022,5,,include,,include,,ST,"GNN over a provenance knowledge graph, anomaly detection on audit records."
+ST-016,Wang et al. THREATRACE: Detecting and Tracing Host-Based Threats in Node Level Through Provenance Graph Learning. IEEE TIFS 2022,5,,include,,,,ST,
+ST-017,Pasquier et al. Practical whole-system provenance capture. SoCC 2017,5,,exclude,E5,,,ST,
+ST-018,Han et al. SIGL: Securing Software Installations Through Deep Graph Learning. USENIX Security 2021,5,,include,,include,,ST,
+ST-019,Liu et al. Log2vec: A Heterogeneous Graph Embedding Based Approach for Detecting Cyber Threats within Enterprise. ACM CCS 2019,5,,exclude,I2,,,ST,"Heterogeneous graph embedding (random-walk style), not a GNN. Also enterprise user logs, not network or provenance data."
+ST-020,Du et al. DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning. ACM CCS 2017,5,,exclude,I2,,,ST,LSTM over log-key sequences. No graph input.
+ST-021,Milajerdi et al. POIROT: Aligning Attack Behavior with Kernel Audit Records for Cyber Threat Hunting. ACM CCS 2019,5,,exclude,I1,,,ST,Graph pattern matching of threat intelligence against provenance. No learning.
+ST-022,Hassan et al. NoDoze: Combatting Threat Alert Fatigue with Automated Provenance Triage. NDSS 2019,5,,exclude,I1,,,ST,Frequency-based anomaly scores propagated over the graph for alert triage. No learned model.
+ST-023,Han et al. FRAPpuccino: Fault-detection through Runtime Analysis of Provenance. HotCloud 2017,5,,exclude,I2,,,ST,"Models normal application behavior from provenance graphs with a sliding window, aimed at faults. No GNN."
+ST-024,Hassan et al. Tactical Provenance Analysis for Endpoint Detection and Response Systems. IEEE S&P 2020,5,,exclude,I1,,,ST,Correlates endpoint alerts by attack tactics (RapSheet). Rule-based.
+ST-025,Wang et al. You Are What You Do: Hunting Stealthy Malware via Data Provenance Analysis. NDSS 2020,5,,exclude,I2,,,ST,"ProvDetector: neural embedding of provenance paths plus ML. Paths, not a GNN."
+ST-026,Paccagnella et al. Custos: Practical Tamper-Evident Auditing of Operating Systems Using Trusted Execution. NDSS 2020,5,,exclude,E5,,,ST,Tamper-evident logging framework.
+ST-027,Paccagnella et al. Logging to the Danger Zone: Race Condition Attacks and Defenses on System Audit Frameworks. ACM CCS 2020,5,,exclude,E5,,,ST,Race-condition attacks and defenses on audit frameworks.
+ST-028,Zhang et al. Dynamic Malware Analysis with Feature Engineering and Feature Learning. AAAI 2020,5,,exclude,E5,,,ST,"Malware classification from API call sequences (Gated-CNN plus BiLSTM). Not intrusion detection, no graph."
+ST-029,Kazemi et al. Representation learning for dynamic graphs: a survey. JMLR 2020,5,,exclude,E7,,,ST,Survey of dynamic-graph representation learning.
+ST-030,Rossi et al. Temporal Graph Networks for Deep Learning on Dynamic Graphs. ICML Workshop on Graph Representation Learning 2020,5,,exclude,E6,,,ST,"General temporal graph method, a workshop paper."
+ST-031,Shi et al. Masked Label Prediction: Unified Message Passing Model for Semi-Supervised Classification. IJCAI 2021,5,,exclude,E6,,,ST,
+ST-032,Pasquier et al. Runtime Analysis of Whole-System Provenance. ACM CCS 2018,5,,exclude,E5,,,ST,"""realtime provenance analysis, making it suitable for implementing security applications"", can be used for intrusion detection, but NOT a learning-based intrusion detection system"
+ST-033,Liu et al. Towards a Timely Causality Analysis for Enterprise Security. NDSS 2018,5,,exclude,E5,,,ST,"PrioTracker: causality tracker for attack investigation, not a detector."
+ST-034,Fey and Lenssen. Fast Graph Representation Learning with PyTorch Geometric. ICLR Workshop on Representation Learning on Graphs and Manifolds 2019,5,,exclude,E6,,,ST,A graph learning software library.
+ST-035,Yu et al. Needle in a Haystack: Attack Detection from Large-Scale System Audit. ICCT 2019,5,,exclude,I1,,,ST,NeedleHunter: rule-based stage detection on provenance graphs.
+ST-036,Berrada and Cheney. Aggregating unsupervised provenance anomaly detectors. TaPP 2019,5,,exclude,I2,,,ST,Aggregates two existing unsupervised anomaly detectors on provenance views. No GNN.
+ST-037,Berrada et al. A baseline for unsupervised advanced persistent threat detection in system-level provenance. FGCS 2020,5,,exclude,I2,,,ST,Evaluates unsupervised batch and streaming anomaly detectors on provenance traces. No GNN.
+ST-038,Xie et al. P-Gaussian: Provenance-Based Gaussian Distribution for Detecting Intrusion Behavior Variants Using High Efficient and Real Time Memory Databases. IEEE TDSC 2021,5,,exclude,I1,,,ST,"Gaussian similarity of intrusion sequences with an in-memory database. Statistical matching, not learning."
+ST-039,Hossain et al. Combating Dependence Explosion in Forensic Analysis Using Alternative Tag Propagation Semantics. IEEE S&P 2020,5,,exclude,E5,,,ST,Morse: tag propagation to limit dependence explosion in forensics. No learning.
+ST-040,Arp et al. Dos and Don'ts of Machine Learning in Computer Security. USENIX Security 2022,5,NK-006,,,,,ST,
+ST-041,Zügner et al. Adversarial Attacks on Neural Networks for Graph Data. KDD 2018,5,,exclude,E6,,,ST,
+ST-042,Zügner and Günnemann. Adversarial Attacks on Graph Neural Networks via Meta Learning. ICLR 2019,5,,exclude,E6,,,ST,
+ST-043,Zhang and Zitnik. GNNGuard: Defending Graph Neural Networks against Adversarial Attacks. NeurIPS 2020,5,,exclude,E6,,,ST,
+ST-044,Alsaheel et al. ATLAS: A Sequence-based Learning Approach for Attack Investigation. USENIX Security 2021,5,,exclude,I2,,,ST,NLP and sequence model over sequences extracted from a causal graph. Not a GNN.
+ST-045,Hossain et al. SLEUTH: Real-time Attack Scenario Reconstruction from COTS Audit Data. USENIX Security 2017,5,,exclude,I1,,,ST,Tag-based attack detection and reconstruction. Rule-based.
+ST-046,Xiong et al. Conan: A Practical Real-Time APT Detection System With High Accuracy and Efficiency. IEEE TDSC 2022,5,,exclude,I1,,,ST,state-based APT detection with FSA-like structures. Rule-based.
+ST-047,Han et al. DeepAID: Interpreting and Improving Deep Learning-based Anomaly Detection in Security Applications. ACM CCS 2021,5,,exclude,I2,,,ST,"Interprets unsupervised deep learning anomaly detectors on tabular, time-series and graph data. The graph detector uses graph embedding, not a GNN."
+ST-048,Wang and Gong. Attacking Graph-based Classification via Manipulating the Graph Structure. ACM CCS 2019,5,,exclude,E5,,,ST,
+ST-049,"Goyal et al. Sometimes, You Aren't What You Do: Mimicry Attacks against Provenance Graph Host Intrusion Detection Systems. NDSS 2023",5,,include,,include,,ST,"Attack paper that evaluates five provenance IDSs, including a SIGL-like graph autoencoder. Included under the several-detectors rule."
+ST-050,Inam et al. SoK: History is a Vast Early Warning System: Auditing the Provenance of System Intrusions. IEEE S&P 2023,5,,exclude,E7,,,ST,
+ST-051,Yang et al. PROGRAPHER: An Anomaly Detection System based on Provenance Graph Embedding. USENIX Security 2023,5,,unsure,,exclude,I2,ST,graph2vec embedding plus TextRCNN. Not a GNN.
+ST-052,Xu et al. DEPCOMM: Graph Summarization on System Audit Logs for Attack Investigation. IEEE S&P 2022,5,,exclude,E5,,,ST,
+ST-053,Hossain et al. Dependence-Preserving Data Compaction for Scalable Forensic Analysis. USENIX Security 2018,5,,exclude,E5,,,ST,
+ST-054,"Han et al. Anomaly Detection in the Open World: Normality Shift Detection, Explanation, and Adaptation. NDSS 2023",5,,exclude,I2,,,ST,Normality shift handling for deep learning anomaly detectors on tabular and time-series data. No graph input.
+ST-055,Ahmad et al. Hardlog: Practical Tamper-Proof System Auditing Using a Novel Audit Device. IEEE S&P 2022,6,,exclude,E5,,,ST,Tamper-proof auditing hardware. Not a detector.
+ST-056,Aljawarneh et al. Anomaly-based intrusion detection system through feature selection analysis and building hybrid efficient model. Journal of Computational Science 2018,6,,exclude,I2,,,ST,Hybrid ML classifiers with feature selection on tabular records. No graph.
+ST-057,Alsaheel et al. ATLAS: A Sequence-based Learning Approach for Attack Investigation. USENIX Security 2021,6,ST-044,,,,,ST,
+ST-058,Arp et al. Dos and Don'ts of Machine Learning in Computer Security. USENIX Security 2022,6,NK-006,,,,,ST,
+ST-059,Bates et al. Transparent Web Service Auditing via Network Provenance Functions. WWW 2017,6,,exclude,E5,,,ST,Network provenance for web service auditing. Not a detector.
+ST-060,Chakkaravarthy et al. A survey on malware analysis and mitigation techniques. Computer Science Review 2019,6,,exclude,E7,,,ST,Survey of malware analysis.
+ST-061,Chakraborty et al. A survey on adversarial attacks and defences. CAAI Transactions on Intelligence Technology 2021,6,,exclude,E7,,,ST,Survey of adversarial attacks and defences.
+ST-062,Du et al. DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning. ACM CCS 2017,6,ST-020,,,,,ST,
+ST-063,Fang et al. Back-Propagating System Dependency Impact for Attack Investigation. USENIX Security 2022,6,,exclude,E5,,,ST,Dependency impact scoring for attack investigation. Not a detector.
+ST-064,Gao et al. SAQL: A Stream-based Query System for Real-Time Abnormal System Behavior Detection. USENIX Security 2018,6,,exclude,I1,,,ST,Query system for abnormal behavior with rule and statistical models.
+ST-065,"Goyal et al. Sometimes, You Aren't What You Do: Mimicry Attacks against Provenance Graph Host Intrusion Detection Systems. NDSS 2023",6,ST-049,,,,,ST,
+ST-066,Hamilton et al. Inductive Representation Learning on Large Graphs. NeurIPS 2017,6,,exclude,E6,,,ST,"GraphSAGE, a general GNN method with no security data."
+ST-067,Han et al. DeepAID: Interpreting and Improving Deep Learning-based Anomaly Detection in Security Applications. ACM CCS 2021,6,ST-047,,,,,ST,
+ST-068,Han et al. Unicorn: Runtime Provenance-Based Detector for Advanced Persistent Threats. NDSS 2020,6,ST-011,,,,,ST,
+ST-069,Han et al. SIGL: Securing Software Installations Through Deep Graph Learning. USENIX Security 2021,6,ST-018,,,,,ST,
+ST-070,Hassan et al. Tactical Provenance Analysis for Endpoint Detection and Response Systems. IEEE S&P 2020,6,ST-024,,,,,ST,
+ST-071,Hassan et al. NoDoze: Combatting Threat Alert Fatigue with Automated Provenance Triage. NDSS 2019,6,ST-022,,,,,ST,
+ST-072,Hassan et al. Towards Scalable Cluster Auditing through Grammatical Inference over Provenance Graphs. NDSS 2018,6,ST-014,,,,,ST,
+ST-073,Hassan et al. OmegaLog: High-Fidelity Attack Investigation via Transparent Multi-layer Log Analysis. NDSS 2020,6,,exclude,E5,,,ST,Multi-layer log analysis for investigation. Not a detector.
+ST-074,Hossain et al. SLEUTH: Real-time Attack Scenario Reconstruction from COTS Audit Data. USENIX Security 2017,6,ST-045,,,,,ST,
+ST-075,Hossain et al. Dependence-Preserving Data Compaction for Scalable Forensic Analysis. USENIX Security 2018,6,ST-053,,,,,ST,
+ST-076,Inam et al. Forensic Analysis of Configuration-based Attacks. NDSS 2022,6,,exclude,E5,,,ST,Configuration change tracking for forensics.
+ST-077,Jagielski et al. Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning. IEEE S&P 2018,6,,exclude,E6,,,ST,"Poisoning attacks on regression learning, general ML."
+ST-078,King and Huang. EULER: Detecting Network Lateral Movement via Scalable Temporal Link Prediction. NDSS 2022,6,,include,,include,,ST,GNN stacked on a sequence encoder (RNN) for anomalous lateral movement in network host logs. Network domain.
+ST-079,Kwon et al. MCI: Modeling-based Causality Inference in Audit Logging for Attack Investigation. NDSS 2018,6,,exclude,E5,,,ST,Causality inference for audit logging. Not a detector.
+ST-080,Kwon et al. C2SR: Cybercrime Scene Reconstruction for Post-mortem Forensic Analysis. NDSS 2021,6,,exclude,E5,,,ST,Forensic scene reconstruction. Not a detector.
+ST-081,Liu et al. Towards a Timely Causality Analysis for Enterprise Security. NDSS 2018,6,ST-033,,,,,ST,
+ST-082,Ma et al. MPI: Multiple Perspective Attack Investigation with Semantic Aware Execution Partitioning. USENIX Security 2017,6,,exclude,E5,,,ST,Attack investigation by execution partitioning. Not a detector.
+ST-083,Madry et al. Towards Deep Learning Models Resistant to Adversarial Attacks. ICLR 2018,6,,exclude,E6,,,ST,"Adversarial robustness, general ML."
+ST-084,Maseer et al. Benchmarking of Machine Learning for Anomaly Based Intrusion Detection Systems in the CICIDS2017 Dataset. IEEE Access 2021,6,,exclude,I2,,,ST,Benchmarks classical ML classifiers on CICIDS2017 flow records. No graph.
+ST-085,Milajerdi et al. HOLMES: Real-Time APT Detection through Correlation of Suspicious Information Flows. IEEE S&P 2019,6,ST-012,,,,,ST,
+ST-086,Milajerdi et al. POIROT: Aligning Attack Behavior with Kernel Audit Records for Cyber Threat Hunting. ACM CCS 2019,6,ST-021,,,,,ST,
+ST-087,Paccagnella et al. Custos: Practical Tamper-Evident Auditing of Operating Systems Using Trusted Execution. NDSS 2020,6,ST-026,,,,,ST,
+ST-088,Pasquier et al. Runtime Analysis of Whole-System Provenance. ACM CCS 2018,6,ST-032,,,,,ST,
+ST-089,Shen and Stringhini. ATTACK2VEC: Leveraging Temporal Word Embeddings to Understand the Evolution of Cyberattacks. USENIX Security 2019,6,,exclude,E5,,,ST,Temporal word embeddings to study how attacks evolve. Not a detector.
+ST-090,Si et al. Gradient Boosted Decision Trees for High Dimensional Sparse Output. ICML 2017,6,,exclude,E6,,,ST,"Gradient boosted trees for sparse outputs, general ML."
+ST-091,Tramer and Boneh. Adversarial Training and Robustness for Multiple Perturbations. NeurIPS 2019,6,,exclude,E6,,,ST,"Adversarial training, general ML."
+ST-092,van Ede et al. DeepCASE: Semi-Supervised Contextual Analysis of Security Events. IEEE S&P 2022,6,,exclude,I2,,,ST,Semi-supervised analysis of security event sequences. No graph input.
+ST-093,Vaswani et al. Attention Is All You Need. NeurIPS 2017,6,FK-008,,,,,ST,
+ST-094,Wang et al. You Are What You Do: Hunting Stealthy Malware via Data Provenance Analysis. NDSS 2020,6,ST-025,,,,,ST,
+ST-095,Wang et al. THREATRACE: Detecting and Tracing Host-Based Threats in Node Level Through Provenance Graph Learning. IEEE TIFS 2022,6,ST-016,,,,,ST,
+ST-096,Xu et al. DEPCOMM: Graph Summarization on System Audit Logs for Attack Investigation. IEEE S&P 2022,6,ST-052,,,,,ST,
+ST-097,Yang et al. PROGRAPHER: An Anomaly Detection System based on Provenance Graph Embedding. USENIX Security 2023,6,ST-051,,,,,ST,
+ST-098,Zeng et al. Watson: Abstracting Behaviors from Audit Logs via Aggregation of Contextual Semantics. NDSS 2021,6,,exclude,E5,,,ST,Behavior abstraction from audit logs for investigation. Not a detector.
+ST-099,Zeng et al. SHADEWATCHER: Recommendation-guided Cyber Threat Analysis using System Audit Records. IEEE S&P 2022,6,ST-015,,,,,ST,
+ST-100,Zeng et al. Palantir: Optimizing Attack Provenance with Hardware-enhanced System Observability. ACM CCS 2022,6,,exclude,E5,,,ST,Hardware-enhanced provenance collection. Not a detector.
+ST-101,Zhou et al. uGrapher: High-Performance Graph Operator Computation via Unified Abstraction for Graph Neural Networks. ASPLOS 2023,6,,exclude,E6,,,ST,Performance library for GNN operators. No security data.
+ST-102,Ji et al. RAIN: Refinable Attack Investigation with On-demand Inter-Process Information Flow Tracking. ACM CCS 2017,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-103,Liu et al. Towards a Timely Causality Analysis for Enterprise Security. NDSS 2018,7,ST-033,,,,,ST,
+ST-104,Hassan et al. NoDoze: Combatting Threat Alert Fatigue with Automated Provenance Triage. NDSS 2019,7,ST-022,,,,,ST,
+ST-105,Hassan et al. This is Why We Can’t Cache Nice Things: Lightning-Fast Threat Hunting using Suspicion-Based Hierarchical Storage. ACSAC 2020,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-106,Milajerdi et al. HOLMES: Real-Time APT Detection through Correlation of Suspicious Information Flows. IEEE S&P 2019,7,ST-012,,,,,ST,
+ST-107,Hassan et al. Tactical Provenance Analysis for Endpoint Detection and Response Systems. IEEE S&P 2020,7,ST-024,,,,,ST,
+ST-108,Hossain et al. SLEUTH: Real-time Attack Scenario Reconstruction from COTS Audit Data. USENIX Security 2017,7,ST-045,,,,,ST,
+ST-109,Hossain et al. Combating Dependence Explosion in Forensic Analysis Using Alternative Tag Propagation Semantics. IEEE S&P 2020,7,ST-039,,,,,ST,
+ST-110,Milajerdi et al. POIROT: Aligning Attack Behavior with Kernel Audit Records for Cyber Threat Hunting. ACM CCS 2019,7,ST-021,,,,,ST,
+ST-111,Wang and Yu. Heterogeneous Graph Matching Networks: Application to Unknown Malware Detection. IEEE BigData 2019,7,,include,,,,ST,GNN over a program execution behaviour graph (MatchGNet). In scope under the host-behaviour rule. Needs full text; the IJCAI 2019 version has an open PDF.
+ST-112,Han et al. Unicorn: Runtime Provenance-Based Detector for Advanced Persistent Threats. NDSS 2020,7,ST-011,,,,,ST,
+ST-113,Han et al. SIGL: Securing Software Installations Through Deep Graph Learning. USENIX Security 2021,7,ST-018,,,,,ST,
+ST-114,Wang et al. You Are What You Do: Hunting Stealthy Malware via Data Provenance Analysis. NDSS 2020,7,ST-025,,,,,ST,
+ST-115,Alsaheel et al. ATLAS: A Sequence-based Learning Approach for Attack Investigation. USENIX Security 2021,7,ST-044,,,,,ST,
+ST-116,van Ede et al. DeepCASE: Semi-Supervised Contextual Analysis of Security Events. IEEE S&P 2022,7,ST-092,,,,,ST,
+ST-117,He and Chua. Neural Factorization Machines for Sparse Predictive Analytics. ACM SIGIR 2017,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-118,Wang et al. Neural graph collaborative filtering. ACM SIGIR 2019,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-119,Wang et al. KGAT: Knowledge Graph Attention Network for Recommendation. KDD 2019,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-120,Wang et al. Learning Intents behind Interactions with Knowledge Graph for Recommendation. WWW 2021,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-121,Zeng et al. Watson: Abstracting Behaviors from Audit Logs via Aggregation of Contextual Semantics. NDSS 2021,7,ST-098,,,,,ST,
+ST-122,Kipf and Welling. Semi-supervised classification with graph convolutional networks. ICLR 2017,7,,exclude,I1,,,ST,General graph learning method. No security data.
+ST-123,Wu et al. Self-supervised graph learning for recommendation. ACM SIGIR 2021,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-124,Hassan et al. OmegaLog: High-Fidelity Attack Investigation via Transparent Multi-layer Log Analysis. NDSS 2020,7,ST-073,,,,,ST,
+ST-125,Paccagnella et al. Logging to the Danger Zone: Race Condition Attacks and Defenses on System Audit Frameworks. ACM CCS 2020,7,ST-027,,,,,ST,
+ST-126,Paccagnella et al. Custos: Practical Tamper-Evident Auditing of Operating Systems Using Trusted Execution. NDSS 2020,7,ST-026,,,,,ST,
+ST-127,Ma et al. MPI: Multiple Perspective Attack Investigation with Semantic Aware Execution Partitioning. USENIX Security 2017,7,ST-082,,,,,ST,
+ST-128,Tang et al. NodeMerge: Template Based Efficient Data Reduction For Big-Data Causality Analysis. ACM CCS 2018,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-129,Irshad et al. TRACE: Enterprise-Wide Provenance Tracking for Real-Time APT Detection. IEEE TIFS 2021,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-130,Wang et al. DKN: Deep Knowledge-Aware Network for News Recommendation. WWW 2018,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-131,Cao et al. Unifying Knowledge Graph Learning and Recommendation: Towards a Better Understanding of User Preferences. WWW 2019,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-132,Qiu et al. DeepInf: Social Influence Prediction with Deep Learning. KDD 2018,7,,exclude,I1,,,ST,General graph learning method. No security data.
+ST-133,Hamilton et al. Inductive Representation Learning on Large Graphs. NeurIPS 2017,7,ST-066,,,,,ST,
+ST-134,Xu et al. Representation learning on graphs with jumping knowledge networks. ICML 2018,7,,exclude,I1,,,ST,General graph learning method. No security data.
+ST-135,Khoury et al. An event-based data model for granular information flow tracking. TaPP 2020,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-136,Arp et al. Dos and Don'ts of Machine Learning in Computer Security. USENIX Security 2022,7,NK-006,,,,,ST,
+ST-137,Rodríguez et al. Beyond one-hot encoding: Lower dimensional target embedding. Image and Vision Computing 2018,7,,exclude,I1,,,ST,General ML or NLP method. No security data.
+ST-138,Yi et al. Fast Training of Deep Learning Models over Multiple GPUs. Middleware 2020,7,,exclude,I1,,,ST,General ML or NLP method. No security data.
+ST-139,Du et al. DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning. ACM CCS 2017,7,ST-020,,,,,ST,
+ST-140,Du et al. Lifelong Anomaly Detection Through Unlearning. ACM CCS 2019,7,,exclude,I2,,,ST,Log anomaly detection with LSTM. No graph input.
+ST-141,Zügner et al. Adversarial Attacks on Neural Networks for Graph Data. KDD 2018,7,ST-041,,,,,ST,
+ST-142,Wang and Gong. Attacking Graph-based Classification via Manipulating the Graph Structure. ACM CCS 2019,7,ST-048,,,,,ST,
+ST-143,Wang et al. Lprov: Practical Library-aware Provenance Tracing. ACSAC 2018,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-144,Pasquier et al. Runtime Analysis of Whole-System Provenance. ACM CCS 2018,7,ST-032,,,,,ST,
+ST-145,Hassan et al. Towards Scalable Cluster Auditing through Grammatical Inference over Provenance Graphs. NDSS 2018,7,ST-014,,,,,ST,
+ST-146,Hossain et al. Dependence-Preserving Data Compaction for Scalable Forensic Analysis. USENIX Security 2018,7,ST-053,,,,,ST,
+ST-147,Kwon et al. MCI: Modeling-based Causality Inference in Audit Logging for Attack Investigation. NDSS 2018,7,ST-079,,,,,ST,
+ST-148,Ji et al. Enabling refinable cross-host attack investigation with efficient data flow tagging and tracking. USENIX Security 2018,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-149,"Yang et al. UIScope: Accurate, Instrumentation-free, and Visible Attack Investigation for GUI Applications. NDSS 2020",7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-150,Yu et al. ALchemist: Fusing Application and Audit Logs for Precise Attack Provenance without Instrumentation. NDSS 2021,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-151,Gao et al. AIQL: Enabling efficient attack investigation from system monitoring data. USENIX ATC 2018,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-152,Gao et al. SAQL: A Stream-based Query System for Real-Time Abnormal System Behavior Detection. USENIX Security 2018,7,ST-064,,,,,ST,
+ST-153,Fei et al. Seal: Storage-efficient causality analysis on enterprise logs with query-friendly compression. USENIX Security 2021,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-154,He et al. Neural collaborative filtering. WWW 2017,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-155,Wang et al. Explainable Reasoning over Knowledge Graphs for Recommendation. AAAI 2019,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-156,Hu et al. Leveraging Meta-path based Context for Top- N Recommendation with A Neural Co-Attention Model. KDD 2018,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-157,Xian et al. Reinforcement knowledge graph reasoning for explainable recommendation. ACM SIGIR 2019,7,,exclude,E5,,,ST,Recommender systems method. No security data.
+ST-158,Roy and Pan. Incorporating Extra Knowledge to Enhance Word Embedding. IJCAI 2020,7,,exclude,I1,,,ST,General ML or NLP method. No security data.
+ST-159,Michael et al. On the Forensic Validity of Approximated Audit Logs. ACSAC 2020,7,,exclude,E5,,,ST,"Provenance capture, reduction, storage or investigation. Not a detector."
+ST-160,Chang et al. A Restricted Black-Box Adversarial Framework Towards Attacking Graph Embedding Models. AAAI 2020,8,,exclude,E6,,,ST,Graph embedding or adversarial attack on graph ML. Not an intrusion detector.
+ST-161,Dai et al. Adversarial Network Embedding. AAAI 2018,8,,exclude,E6,,,ST,Graph embedding or adversarial attack on graph ML. Not an intrusion detector.
+ST-162,Dong et al. metapath2vec: Scalable Representation Learning for Heterogeneous Networks. KDD 2017,8,,exclude,E6,,,ST,Graph embedding or adversarial attack on graph ML. Not an intrusion detector.
+ST-163,Du et al. DeepLog: Anomaly Detection and Diagnosis from System Logs through Deep Learning. ACM CCS 2017,8,ST-020,,,,,ST,
+ST-164,Gao et al. SAQL: A Stream-based Query System for Real-Time Abnormal System Behavior Detection. USENIX Security 2018,8,ST-064,,,,,ST,
+ST-165,Han et al. Unicorn: Runtime Provenance-Based Detector for Advanced Persistent Threats. NDSS 2020,8,ST-011,,,,,ST,
+ST-166,Han et al. FRAPpuccino: Fault-detection through Runtime Analysis of Provenance. HotCloud 2017,8,ST-023,,,,,ST,
+ST-167,Han et al. Provenance-based intrusion detection: Opportunities and challenges. TaPP 2018,8,,exclude,E7,,,ST,Position paper on provenance-based detection. No detector.
+ST-168,Hassan et al. NoDoze: Combatting Threat Alert Fatigue with Automated Provenance Triage. NDSS 2019,8,ST-022,,,,,ST,
+ST-169,Hossain et al. SLEUTH: Real-time Attack Scenario Reconstruction from COTS Audit Data. USENIX Security 2017,8,ST-045,,,,,ST,
+ST-170,Khodak et al. A La Carte Embedding: Cheap but Effective Induction of Semantic Feature Vectors. ACL 2018,8,,exclude,I1,,,ST,General ML or NLP method. No security data.
+ST-171,Milajerdi et al. HOLMES: Real-Time APT Detection through Correlation of Suspicious Information Flows. IEEE S&P 2019,8,ST-012,,,,,ST,
+ST-172,Pasquier et al. Practical whole-system provenance capture. SoCC 2017,8,ST-017,,,,,ST,
+ST-173,Pasquier et al. Runtime Analysis of Whole-System Provenance. ACM CCS 2018,8,ST-032,,,,,ST,
+ST-174,Peng et al. Cross-Sentence N -ary Relation Extraction with Graph LSTMs. TACL 2017,8,,exclude,I1,,,ST,General ML or NLP method. No security data.
+ST-175,Shen et al. Tiresias: Predicting Security Events Through Deep Learning. ACM CCS 2018,8,,exclude,I2,,,ST,Deep learning on security event sequences. No graph input.
+ST-176,Stringhini et al. Marmite: Spreading Malicious File Reputation Through Download Graphs. ACSAC 2017,8,,exclude,I2,,,ST,"Graph propagation for file reputation, not a GNN, malware downloads."
+ST-177,Wang and Gong. Attacking Graph-based Classification via Manipulating the Graph Structure. ACM CCS 2019,8,ST-048,,,,,ST,
+ST-178,Wang et al. SybilSCAR: Sybil detection in online social networks via local rule based propagation. IEEE INFOCOM 2017,8,,exclude,E5,,,ST,Not intrusion detection (social network or web privacy).
+ST-179,Wang et al. Riverbed: Enforcing userdefined privacy constraints in distributed web services. NSDI 2019,8,,exclude,E5,,,ST,Not intrusion detection (social network or web privacy).
+ST-180,Zügner et al. Adversarial Attacks on Neural Networks for Graph Data. KDD 2018,8,ST-041,,,,,ST,
+ST-181,Zügner and Günnemann. Certifiable Robustness and Robust Training for Graph Convolutional Networks. KDD 2019,8,,exclude,E6,,,ST,Graph embedding or adversarial attack on graph ML. Not an intrusion detector.

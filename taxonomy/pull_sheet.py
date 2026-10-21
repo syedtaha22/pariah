@@ -13,6 +13,7 @@ Usage:
 import argparse
 import csv
 import io
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -21,6 +22,7 @@ from pathlib import Path
 SHEET_ID = "1oLs2gFi7dHppirYe85IIiVnHk7T8rR8FWzJ5L6e9kAc"
 OUT_DIR = Path(__file__).resolve().parent / "data"
 TIMEOUT_S = 30
+ID_PATTERN = re.compile(r"^([A-Z]+)-(\d+)$")
 
 # Tab name -> (gid, is_table, expected first header cell). Tables have one header row and one
 # record per row. A report tab is written as it appears, apart from trailing empty columns.
@@ -95,6 +97,71 @@ def normalize_table(tab: str, text: str, first_header: str) -> list[list[str]]:
     return rows
 
 
+def check_screening(rows: list[list[str]]) -> list[str]:
+    """
+    Return the problems found in the screening table, or an empty list when it is consistent.
+
+    Within each id prefix the numbers should increase down the sheet. A row with a duplicate_of
+    value should point to an earlier row that is not itself a duplicate, and its citation should
+    match the citation of that row exactly.
+    """
+    header, body = rows[0], rows[1:]
+    missing = [c for c in ("candidate_id", "citation", "duplicate_of") if c not in header]
+    if missing:
+        return [f"screening has no column {c!r}" for c in missing]
+    i_id, i_cit, i_dup = (header.index(c) for c in ("candidate_id", "citation", "duplicate_of"))
+
+    problems = []
+    row_of: dict[str, int] = {}
+    top: dict[str, tuple[int, str]] = {}
+    for n, row in enumerate(body, start=2):
+        cid = row[i_id]
+        match = ID_PATTERN.match(cid)
+        if not match:
+            problems.append(f"row {n}: candidate_id {cid!r} does not look like PREFIX-number")
+            continue
+        if cid in row_of:
+            problems.append(f"row {n}: {cid} already appears in row {row_of[cid]}")
+            continue
+        row_of[cid] = n
+        prefix, number = match.group(1), int(match.group(2))
+        if prefix in top and number < top[prefix][0]:
+            problems.append(
+                f"row {n}: {cid} comes after {top[prefix][1]}, but ids with the same prefix "
+                "should increase down the sheet"
+            )
+        else:
+            top[prefix] = (number, cid)
+
+    by_id = {row[i_id]: row for row in body}
+    for n, row in enumerate(body, start=2):
+        cid, original = row[i_id], row[i_dup]
+        if not original:
+            continue
+        if original not in row_of:
+            problems.append(
+                f"row {n}: {cid} is a duplicate of {original}, which is not in the sheet"
+            )
+        elif row_of[original] >= n:
+            problems.append(
+                f"row {n}: {cid} is a duplicate of {original}, which should come before it "
+                f"(row {row_of[original]})"
+            )
+        else:
+            source = by_id[original]
+            if source[i_dup]:
+                problems.append(
+                    f"row {n}: {cid} is a duplicate of {original}, which is itself a duplicate "
+                    f"of {source[i_dup]}"
+                )
+            if row[i_cit] != source[i_cit]:
+                problems.append(
+                    f"row {n}: {cid} is a duplicate of {original} but the citations differ:\n"
+                    f"    {cid}: {row[i_cit]}\n    {original}: {source[i_cit]}"
+                )
+    return problems
+
+
 def normalize_report(tab: str, text: str, first_header: str) -> list[list[str]]:
     """
     Parse a report tab, keeping its layout and validating the first cell.
@@ -129,6 +196,13 @@ def main() -> int:
         text = fetch_csv(export_url(args.sheet_id, gid))
         parse = normalize_table if is_table else normalize_report
         rows = parse(tab, text, first_header)
+        if tab == "screening":
+            problems = check_screening(rows)
+            if problems:
+                raise SystemExit(
+                    f"The screening tab is inconsistent and nothing was written "
+                    f"({len(problems)} problems):\n" + "\n".join(problems)
+                )
         pending[args.out_dir / f"{tab}.csv"] = render(rows)
         records = len(rows) - 1 if is_table else len(rows)
         print(f"{tab}: {records} {'records' if is_table else 'rows'}, {len(rows[0])} columns")
