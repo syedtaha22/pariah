@@ -15,3 +15,7 @@ date,source,method,query_or_seed,filters,hits,imported,searcher,notes
 2026-10-19,USENIX proceedings,backward,mukherjee2023evading,published 2017 or later; peer-reviewed publications only,73,26,ST,
 2026-10-23,ACM Digital Library,backward,altinisik2023provg,published 2017 or later; peer-reviewed publications only,85,46,ST,
 2026-10-23,ACM Digital Library,backward,mansourbahar2024fedhe,published 2017 or later; peer-reviewed publications only,39,19,ST,
+2026-10-23,IEEE Xplore,backward,goyal2024rcaid,published 2017 or later; peer-reviewed publications only,87,40,ST,
+2026-10-23,ACM Digital Library,backward,king2023edgetorrent,published 2017 or later; peer-reviewed publications only,70,51,ST,
+2026-10-23,Springer Nature,backward,xu2024procsage,published 2017 or later; peer-reviewed publications only,41,27,ST,
+2026-10-23,ACM Digital Library,backward,abrar2025reproducibility,published 2017 or later; peer-reviewed publications only,79,40,ST,

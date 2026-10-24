@@ -1,8 +1,8 @@
 Stage,Count,,,How it is computed
-Records identified,539,,,Sum of the imported column in search_log
-Duplicates removed,251,,,Rows in screening with a duplicate_of value
-Screened at title and abstract,288,,,Identified minus duplicates
-Excluded at title and abstract,249,,,Rows with title_abstract_decision = exclude
+Records identified,697,,,Sum of the imported column in search_log
+Duplicates removed,353,,,Rows in screening with a duplicate_of value
+Screened at title and abstract,344,,,Identified minus duplicates
+Excluded at title and abstract,308,,,Rows with title_abstract_decision = exclude
 Read in full text,23,,,Rows with a full_text_decision
 Excluded at full text,6,,,Rows with full_text_decision = exclude
 Included,17,,,Rows with full_text_decision = include
@@ -15,15 +15,15 @@ Included plus excluded at full text equal full text reads,OK,,,
 ,,,,
 Exclusions by reason,,,,
 Reason code,Title and abstract,Full text,Total,Meaning
-E7,30,0,30,"Survey, systematization, taxonomy or position paper that proposes no detector"
-E6,84,0,84,"General method, benchmark, library or theory with no security data or security evaluation"
-E5,71,0,71,"Different security task, no intrusion detection component"
-I1,21,1,22,An instrusion detector that is not learning-based
+E7,37,0,37,"Survey, systematization, taxonomy or position paper that proposes no detector"
+E6,109,0,109,"General method, benchmark, library or theory with no security data or security evaluation"
+E5,80,0,80,"Different security task, no intrusion detection component"
+I1,23,1,24,An instrusion detector that is not learning-based
 E1,1,0,1,Learning-based detector that uses graphs only for visualization or analysis.
-E2,1,0,1,Learning-based detector whose Transformer has no graph-structured input.
-I2,41,5,46,"Learning-based detector with no graph input, or with graph input but no GNN, graph Transformer or hybrid"
+E2,2,0,2,Learning-based detector whose Transformer has no graph-structured input.
+I2,55,5,60,"Learning-based detector with no graph input, or with graph input but no GNN, graph Transformer or hybrid"
 I3,0,0,0,Detector for data other than network traffic or host provenance.
-E3,0,0,0,"Abstract, poster or extended abstract with no evaluation."
+E3,1,0,1,"Abstract, poster or extended abstract with no evaluation."
 I4,0,0,0,Not peer reviewed
 I5,0,0,0,Published outside the date range.
 I6,0,0,0,Not written in English.
