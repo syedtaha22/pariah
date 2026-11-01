@@ -20,14 +20,15 @@ The CSV files should not be edited by hand. They should be produced from the she
 [pull_sheet.py](pull_sheet.py), so the two cannot silently diverge and every change to the record
 is a reviewable git diff.
 
-The sheet has five tabs:
+The sheet has six tabs:
 
 | Tab | Contents | CSV |
 | --- | --- | --- |
 | `annotation` | One row per included paper, one column per attribute | `data/annotation.csv` |
+| `reproduction` | One row per attempt to reproduce an annotated paper | `data/reproduction.csv` |
 | `search_log` | One row per search or citation chase | `data/search_log.csv` |
 | `screening` | One row per candidate paper, with its screening decisions | `data/screening.csv` |
-| `counts` | Screening totals and exclusions by reason, computed by formulas | `data/counts.csv` |
+| `counts` | Screening totals, exclusions by reason and reproduction totals, computed by formulas | `data/counts.csv` |
 | `guide` | Explains every column and reason code | none |
 
 ## Files
@@ -35,7 +36,7 @@ The sheet has five tabs:
 - [selection_criteria.md](selection_criteria.md): scope, date range, sources, search terms, and the
   inclusion and exclusion criteria.
 - [pull_sheet.py](pull_sheet.py): downloads the tabs of the sheet into the CSV files in `data/`.
-- [data/](data/): `annotation.csv`, `search_log.csv`, `screening.csv` and `counts.csv`, the record.
+- [data/](data/): `annotation.csv`, `reproduction.csv`, `search_log.csv`, `screening.csv` and `counts.csv`, the record.
 - `README.md`: this file.
 
 ## Usage

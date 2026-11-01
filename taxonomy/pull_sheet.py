@@ -28,6 +28,7 @@ ID_PATTERN = re.compile(r"^([A-Z]+)-(\d+)$")
 # record per row. A report tab is written as it appears, apart from trailing empty columns.
 TABS = {
     "annotation": ("385185777", True, "paper_id"),
+    "reproduction": ("1279842993", True, "paper_id"),
     "search_log": ("1473108103", True, "date"),
     "screening": ("1676657732", True, "candidate_id"),
     "counts": ("1906502540", False, "Stage"),
