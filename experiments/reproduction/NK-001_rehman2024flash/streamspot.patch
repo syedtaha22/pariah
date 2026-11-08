@@ -1,0 +1,40 @@
+diff --git a/streamspot.ipynb b/streamspot.ipynb
+index 56ab26c..a97088c 100644
+--- a/streamspot.ipynb
++++ b/streamspot.ipynb
+@@ -107,9 +107,12 @@
+     "                gId = int(row[5])\n",
+     "                show('Graph ' + str(gId))\n",
+     "                scene = int(gId/100)+1\n",
+-    "                if not osp.exists('streamspot/'+str(scene)):\n",
+-    "                    os.system('mkdir streamspot/'+str(scene))\n",
+-    "                ff = open('streamspot/'+str(scene)+'/'+str(gId)+'.txt', 'w')\n",
++    "                # Changed from upstream: the evaluation cells read streamspot/{graph}.txt, so the\n",
++    "                # files are written without the per-scene directory.\n",
++    "                # if not osp.exists('streamspot/'+str(scene)):\n",
++    "                #     os.system('mkdir streamspot/'+str(scene))\n",
++    "                # ff = open('streamspot/'+str(scene)+'/'+str(gId)+'.txt', 'w')\n",
++    "                ff = open('streamspot/'+str(gId)+'.txt', 'w')\n",
+     "            ff.write(str(row[0])+'\\t'+str(row[1])+'\\t'+str(row[2])+'\\t'+str(row[3])+'\\t'+str(row[4])+'\\t'+str(row[5])+'\\n')\n",
+     "    os.system('rm all.tsv')\n",
+     "    show('Done.')"
+@@ -233,6 +236,19 @@
+     "        self.epoch += 1"
+    ]
+   },
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {
++    "tags": []
++   },
++   "outputs": [],
++   "source": [
++    "# Added: the notebook defines parse_data() but never calls it, and nothing creates streamspot/.\n",
++    "os.makedirs('streamspot', exist_ok=True)\n",
++    "parse_data()"
++   ]
++  },
+   {
+    "cell_type": "code",
+    "execution_count": null,

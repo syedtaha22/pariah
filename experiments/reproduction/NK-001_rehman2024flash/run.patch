@@ -1,0 +1,128 @@
+diff --git a/run.sh b/run.sh
+new file mode 100755
+index 0000000..46d22c5
+--- /dev/null
++++ b/run.sh
+@@ -0,0 +1,12 @@
++#!/bin/bash
++# Runs one notebook cell by cell as a memory-limited systemd user service. The outputs are written into the
++# notebook itself, and the progress and the printed output of every cell are shown on the terminal.
++# Usage: ./run.sh <notebook>.ipynb
++set -eu
++cd "$(dirname "$0")"
++NB="${1%.ipynb}"
++[ -f "$NB.ipynb" ] || { echo "no such notebook: $NB.ipynb" >&2; exit 1; }
++systemd-run --user --collect --wait --pipe -q \
++  -p MemoryMax=7G -p MemorySwapMax=0 -p OOMScoreAdjust=1000 -p WorkingDirectory="$PWD" \
++  -E LD_LIBRARY_PATH="$(echo "$PWD"/.venv/lib/python3.10/site-packages/nvidia/*/lib | tr ' ' ':')" \
++  "$PWD/.venv/bin/python" -I run_notebook.py "$NB"
+diff --git a/run_notebook.py b/run_notebook.py
+new file mode 100644
+index 0000000..6fde67f
+--- /dev/null
++++ b/run_notebook.py
+@@ -0,0 +1,104 @@
++"""
++Execute a notebook cell by cell and log the memory of the service after every cell.
++
++This file is not part of the upstream repository. It does the same job as
++`jupyter nbconvert --to notebook --execute --inplace`, but writes the outputs into the notebook after every
++cell. It prints the start time, duration and peak anonymous memory (from the service's cgroup) of every cell,
++the memory again whenever it changes by 250 MB, and the printed output of every cell when the cell ends, so
++that a run killed by the memory limit shows which cell was running. The outputs of an earlier run are cleared
++first. The cells run in the kernel of the Python that runs this script.
++
++Usage:
++    .venv/bin/python run_notebook.py NAME     # runs NAME.ipynb and writes the outputs into it
++"""
++
++import sys
++import threading
++import time
++from pathlib import Path
++
++import nbformat
++from nbclient import NotebookClient
++
++
++def cgroup_dir() -> Path:
++    for line in Path("/proc/self/cgroup").read_text().splitlines():
++        if line.startswith("0::"):
++            return Path("/sys/fs/cgroup") / line[3:].lstrip("/")
++    raise SystemExit("no cgroup v2 path found")
++
++
++def anon_mb(cg: Path) -> float:
++    for line in (cg / "memory.stat").read_text().splitlines():
++        if line.startswith("anon "):
++            return int(line.split()[1]) / 2**20
++    return 0.0
++
++
++def show_outputs(cell) -> None:
++    for out in cell.outputs:
++        if out.output_type == "stream":
++            text = out.text
++        elif out.output_type in ("execute_result", "display_data"):
++            text = out.get("data", {}).get("text/plain", "")
++        else:
++            continue
++        if text:
++            print(text if text.endswith("\n") else text + "\n", end="", flush=True)
++
++
++def main() -> int:
++    name = sys.argv[1]
++    path = Path(f"{name}.ipynb")
++    nb = nbformat.read(path, as_version=4)
++    for cell in nb.cells:
++        if cell.cell_type == "code":
++            cell.outputs, cell.execution_count = [], None
++    cg = cgroup_dir()
++    peak = [0.0]
++    last = [0.0]
++    current = [-1]
++    stop = threading.Event()
++
++    def sample() -> None:
++        while not stop.is_set():
++            try:
++                now = anon_mb(cg)
++                peak[0] = max(peak[0], now)
++                if abs(now - last[0]) >= 250:
++                    last[0] = now
++                    print(f"  cell {current[0]} anon {now:.0f} MB", flush=True)
++            except OSError:
++                pass
++            stop.wait(1.0)
++
++    threading.Thread(target=sample, daemon=True).start()
++    client = NotebookClient(nb, timeout=-1, kernel_name="python3")
++    t_all = time.time()
++    with client.setup_kernel():
++        for i, cell in enumerate(nb.cells):
++            if cell.cell_type != "code":
++                continue
++            peak[0] = 0.0
++            current[0] = i
++            t0 = time.time()
++            print(f"cell {i} start {time.strftime('%H:%M:%S')}", flush=True)
++            try:
++                client.execute_cell(cell, i)
++            except Exception as e:
++                nbformat.write(nb, path)
++                show_outputs(cell)
++                print(f"cell {i} FAILED after {time.time() - t0:.0f} s, peak anon {peak[0]:.0f} MB: "
++                      f"{type(e).__name__}: {e}", flush=True)
++                return 1
++            nbformat.write(nb, path)
++            print(f"cell {i} done {time.time() - t0:.0f} s, peak anon {peak[0]:.0f} MB, "
++                  f"anon now {anon_mb(cg):.0f} MB", flush=True)
++            show_outputs(cell)
++    stop.set()
++    print(f"finished all cells in {time.time() - t_all:.0f} s", flush=True)
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())

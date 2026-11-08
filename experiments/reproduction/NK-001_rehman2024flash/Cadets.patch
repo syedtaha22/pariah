@@ -1,0 +1,75 @@
+diff --git a/Cadets.ipynb b/Cadets.ipynb
+index 77db7ae..7ac0b32 100644
+--- a/Cadets.ipynb
++++ b/Cadets.ipynb
+@@ -58,11 +58,11 @@
+    "metadata": {},
+    "outputs": [],
+    "source": [
+-    "import gdown\n",
+-    "urls = [\"https://drive.google.com/file/d/1AcWrYiBmgAqp7DizclKJYYJJBQbnDMfb/view?usp=drive_link\",\n",
+-    "      \"https://drive.google.com/file/d/1EycO23tEvZVnN3VxOHZ7gdbSCwqEZTI1/view?usp=drive_link\"]\n",
+-    "for url in urls:\n",
+-    "    gdown.download(url, quiet=False, use_cookies=False, fuzzy=True)"
++    "# import gdown\n",
++    "# urls = [\"https://drive.google.com/file/d/1AcWrYiBmgAqp7DizclKJYYJJBQbnDMfb/view?usp=drive_link\",\n",
++    "#       \"https://drive.google.com/file/d/1EycO23tEvZVnN3VxOHZ7gdbSCwqEZTI1/view?usp=drive_link\"]\n",
++    "# for url in urls:\n",
++    "#     gdown.download(url, quiet=False, use_cookies=False, fuzzy=True)"
+    ]
+   },
+   {
+@@ -418,13 +418,28 @@
+    "metadata": {},
+    "outputs": [],
+    "source": [
+-    "def add_attributes(d,p):\n",
+-    "    \n",
+-    "    f = open(p)\n",
+-    "    data = [json.loads(x) for x in f if \"EVENT\" in x]\n",
++    "def add_attributes(d,p,chunk_events=250000):\n",
++    "    # Changed from upstream: the events are merged in chunks instead of parsing the whole\n",
++    "    # file into memory at once, and duplicate rows are removed before merging (identical rows\n",
++    "    # only produce rows that the final drop_duplicates removes). The output is the same as the\n",
++    "    # original.\n",
++    "    d = d.astype(str)\n",
++    "    d['_row'] = np.arange(len(d))\n",
++    "    d = d.drop_duplicates(subset=[c for c in d.columns if c != '_row'])\n",
++    "    merged = []\n",
++    "\n",
++    "    def merge_chunk(info):\n",
++    "        rdf = pd.DataFrame.from_records(info).astype(str).drop_duplicates()\n",
++    "        m = d.merge(rdf,how='inner',on=['actorID','objectID','action','timestamp'])\n",
++    "        merged.append(m.drop_duplicates(subset=list(m.columns.drop('_row'))))\n",
+     "\n",
++    "    f = open(p)\n",
+     "    info = []\n",
+-    "    for x in data:\n",
++    "    n_events = 0\n",
++    "    for line in f:\n",
++    "        if \"EVENT\" not in line:\n",
++    "            continue\n",
++    "        x = json.loads(line)\n",
+     "        try:\n",
+     "            action = x['datum']['com.bbn.tc.schema.avro.cdm18.Event']['type']\n",
+     "        except:\n",
+@@ -461,10 +476,16 @@
+     "\n",
+     "        info.append({'actorID':actor,'objectID':obj,'action':action,'timestamp':timestamp,'exec':cmd, 'path':path})\n",
+     "\n",
+-    "    rdf = pd.DataFrame.from_records(info).astype(str)\n",
+-    "    d = d.astype(str)\n",
++    "        n_events += 1\n",
++    "        if n_events % chunk_events == 0:\n",
++    "            merge_chunk(info)\n",
++    "            info = []\n",
++    "\n",
++    "    if info:\n",
++    "        merge_chunk(info)\n",
+     "\n",
+-    "    return d.merge(rdf,how='inner',on=['actorID','objectID','action','timestamp']).drop_duplicates()"
++    "    out = pd.concat(merged).sort_values('_row', kind='stable').drop(columns='_row').reset_index(drop=True)\n",
++    "    return out.drop_duplicates()"
+    ]
+   },
+   {
